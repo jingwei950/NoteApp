@@ -77,6 +77,9 @@ public class NoteActivity extends AppCompatActivity {
                 //db.update(title, content);
                 Toast.makeText(view.getContext(), "You have clicked on save button, saved title: " + title.getText().toString() +
                         " content: " + content.getText().toString() , Toast.LENGTH_SHORT).show();
+
+                //Go back to main page
+                onBackPressed();
             }
         });
     }

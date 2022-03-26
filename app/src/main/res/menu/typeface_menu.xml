@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/anaheim"
+        android:title="Anaheim"
+        android:titleCondensed="anaheim"/>
+
+    <item android:id="@+id/euphoriaScript"
+        android:title="Euphoria Script"
+        android:titleCondensed="euphoriaScript"/>
+
+    <item android:id="@+id/lancelot"
+        android:title="Lancelot"
+        android:titleCondensed="lancelot"/>
+
+    <item android:id="@+id/monospace"
+        android:title="Monospace"
+        android:titleCondensed="monospace"/>
+</menu>

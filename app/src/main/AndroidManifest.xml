@@ -20,10 +20,13 @@
             android:label="@string/title_activity_note"
             android:theme="@style/Theme.NoteApp.NoActionBar" />
         <activity
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NoteApp.NoActionBar" />
+        <activity
             android:name=".SignUpActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.NoteApp.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -195,11 +195,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.addNote:
+                //Go to AddNote activity
                 startActivity(new Intent(this, AddNote.class));
                 break;
 
-            case R.id.sync:
-                Toast.makeText(this, "You have clicked on sync notes", Toast.LENGTH_SHORT).show();
+            case R.id.profile:
+                //Go to Profile activity
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
 
             case R.id.rating:

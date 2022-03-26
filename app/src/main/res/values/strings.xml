@@ -20,4 +20,7 @@
     <string name="addNote_title">Write your title here</string>
     <string name="addNote_details">Write your note here</string>
 
+    <!--Profile activity strings-->
+    <string name="profile">Profile page</string>
+    <string name="title_activity_profile1">ProfileActivity1</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.noteapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
@@ -18,6 +19,7 @@ import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import java.text.DecimalFormat;
 
@@ -25,11 +27,17 @@ public class ProfileActivity extends AppCompatActivity{
     Switch switchDayNight;
     SharedPreferences pref;
     SharedPreferences.Editor prefEditor;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_layout);
+        setContentView(R.layout.activity_profile);
+
+        //Assign the toolbar to variable
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Display back arrow button at top left
 
         switchDayNight = findViewById(R.id.switchDarkLight);
         pref = getSharedPreferences("day_night", MODE_PRIVATE);
@@ -37,6 +45,18 @@ public class ProfileActivity extends AppCompatActivity{
 
         getPrefs();
         setDayNightSwitchCheckChange();
+    }
+
+    //Top back arrow
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Check the id of item clicked is the id of back arrow button on action bar
+        if(item.getItemId() == android.R.id.home){ //Action bar back button id (android.R.id.home)
+            //In-built android back function
+            onBackPressed(); //Make the action bar back button to go back to previous activity
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void getPrefs(){

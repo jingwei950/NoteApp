@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/drawer">
+
+    <!--The drawer layout includes the content_main layout which is the actual main page-->
+    <include
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/content_main"/>
+
+    <!-- NAVIGATION VIEW:
+        1.Header layout
+            1a. Header layout displays 4 text views: App name, App message, User's name & User's email
+
+        2.Menu layout
+            2a. Menu layout displays the items categorized in General, Support, Logout
+
+        3.Navigation view property:
+            3a. layout_gravity hides the navigation to the side
+            3b. Specify the menu layout that contains the nav menu items (nav_menu)
+            3c. Speicfy the header layout (nav_header)
+    -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/nav_header"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

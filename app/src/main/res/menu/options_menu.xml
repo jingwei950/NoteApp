@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--3 dot menu items:
+        1. New folder: add a new folder
+        2. Home: back to home page
+    -->
+    <item
+        android:title="New Folder"
+        android:id="@+id/newFolder"/>
+
+    <item
+        android:title="Home"
+        android:id="@+id/home"/>
+
+    <item
+        android:title="Select"
+        android:id="@+id/select"/>
+
+</menu>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NAVIGATION MENU (Bottom part of navigation view):
+        1.General category item
+            1a. Notes item
+            1b. AddNote item
+
+        2.Support category item
+            2a. Rating item
+            2b. Share app item
+            2c. Help
+
+        3.Logout category item
+            3a. Logout item
+    -->
+
+    <item android:title="General">
+        <menu>
+            <item
+                android:id="@+id/notes"
+                android:icon="@drawable/ic_baseline_sticky_note_2_24"
+                android:title="Notes" />
+            <item
+                android:id="@+id/addNote"
+                android:icon="@drawable/ic_baseline_add_circle_24"
+                android:title="Add Note" />
+            <item
+                android:id="@+id/sync"
+                android:icon="@drawable/ic_baseline_sync_24"
+                android:title="Sync Notes" />
+        </menu>
+    </item>
+
+    <item android:title="Support">
+        <menu>
+            <item
+                android:id="@+id/rating"
+                android:icon="@drawable/ic_baseline_star_rate_24"
+                android:title="Rate App" />
+
+            <item
+                android:id="@+id/shareapp"
+                android:icon="@drawable/ic_baseline_share_24"
+                android:title="Share App" />
+
+            <item
+                android:id="@+id/help"
+                android:icon="@drawable/ic_baseline_help_24"
+                android:title="Help" />
+        </menu>
+    </item>
+
+    <item android:title="Logout">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_baseline_vpn_key_24"
+                android:title="Logout" />
+        </menu>
+    </item>
+</menu>

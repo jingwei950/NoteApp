@@ -29,6 +29,11 @@ import org.w3c.dom.Text;
 
 public class NoteActivity extends AppCompatActivity {
 
+    private EditText title;                   //Edit text title
+    private EditText content;                 //Edit text content
+    private View view;                        //View for this activity
+    private FloatingActionButton saveNoteFab; //Floating action button for saving note
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,23 +49,23 @@ public class NoteActivity extends AppCompatActivity {
         //Get the data passed adapter
         Intent data = getIntent();
 
-        //Assign text views to variables
-        EditText title = findViewById(R.id.noteEditTitle);
-        EditText content = findViewById(R.id.noteEditContent);
-        View view = findViewById(R.id.note);
+        //Assign views to variables
+        title = findViewById(R.id.noteEditTitle);
+        content = findViewById(R.id.noteEditContent);
+        view = findViewById(R.id.note);
 
         //Allow the scrolling when the content have too many words
         content.setMovementMethod(new ScrollingMovementMethod());
 
         //Set the text that is passed from the adapter
-        title.setText(data.getStringExtra("title"));    //Title passed from adapter
-        content.setText(data.getStringExtra("content"));//Content passed from adapter
+        title.setText(data.getStringExtra("title"));    //Set the title passed from adapter
+        content.setText(data.getStringExtra("content"));//Set the content passed from adapter
 
         //Set the content background color as the same in the main activity (Generated and passed from adapter)
-        view.setBackgroundColor(getResources().getColor(data.getIntExtra("color", 0))); //Color passed from adapter
+        view.setBackgroundColor(getResources().getColor(data.getIntExtra("color", 0))); //Set the view's color passed from adapter
 
         //Floating action button for saving the notes
-        FloatingActionButton saveNoteFab = findViewById(R.id.saveNoteFab);
+        saveNoteFab = findViewById(R.id.saveNoteFab);
 
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveNoteFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));

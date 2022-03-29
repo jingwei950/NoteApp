@@ -14,20 +14,20 @@
             1a. Scrollbar="vertical" allow the notes to scroll vertically if the notes have too many words
     -->
 
-<!--    <TextView-->
-<!--        android:id="@+id/noteActivityContent"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:isScrollContainer="true"-->
-<!--        android:padding="18dp"-->
-<!--        android:scrollbars="vertical"-->
-<!--        android:text="TextView"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/noteActivityContent"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:isScrollContainer="true"-->
+    <!--        android:padding="18dp"-->
+    <!--        android:scrollbars="vertical"-->
+    <!--        android:text="TextView"-->
+    <!--        android:textColor="#000000"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <EditText
         android:id="@+id/noteEditTitle"

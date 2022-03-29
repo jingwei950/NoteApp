@@ -1,7 +1,11 @@
 package com.example.noteapp;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
+import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,8 +22,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,11 +35,12 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.noteapp.databinding.ActivityAddNoteBinding;
 
 public class AddNote extends AppCompatActivity {
-
     EditText addNoteTitle;
     EditText addNoteContent;
     Toolbar toolbar;
     ProgressBar progressBar;
+
+    SharedPrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,8 @@ public class AddNote extends AppCompatActivity {
                 }
             }
         });
+
+        getPref();
     }
 
     @Override
@@ -121,5 +130,24 @@ public class AddNote extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getPref(){
+        prefManager = new SharedPrefManager(getApplicationContext());
+        //Typeface
+        String typeface = prefManager.get(SharedPrefManager.TYPEFACE, SharedPrefManager.TYPEFACE_DEFAULT);
+        prefManager.setTypeface(addNoteContent, typeface);
+
+        //Font Size
+        String fontSize = prefManager.get(SharedPrefManager.FONT_SIZE, SharedPrefManager.FONT_SIZE_DEFAULT);
+        prefManager.setFontSize(addNoteContent, fontSize);
+
+        //Line Height
+        String lineHeight = prefManager.get(SharedPrefManager.LINE_HEIGHT, SharedPrefManager.LINE_HEIGHT_DEFAULT);
+        prefManager.setLineHeight(addNoteContent, lineHeight);
+
+        //Letter Spacing
+        String letterSpacing = prefManager.get(SharedPrefManager.LETTER_SPACING, SharedPrefManager.LETTER_SPACING_DEFAULT);
+        prefManager.setLetterSpacing(addNoteContent, letterSpacing);
     }
 }

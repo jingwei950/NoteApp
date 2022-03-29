@@ -27,11 +27,11 @@ public class NoteDatabase extends SQLiteOpenHelper {
         //Create table
         String query = "CREATE TABLE " + DATABASE_TABLE +
                 "("+
-                    KEY_ID + " INT PRIMARY KEY, " +
-                    KEY_TITLE + " TEXT," +
-                    KEY_CONTENT + " TEXT," +
-                    KEY_DATE + " TEXT," +
-                    KEY_TIME + " TEXT" +
+                KEY_ID + " INT PRIMARY KEY, " +
+                KEY_TITLE + " TEXT," +
+                KEY_CONTENT + " TEXT," +
+                KEY_DATE + " TEXT," +
+                KEY_TIME + " TEXT" +
                 ")";
 
         db.execSQL(query);

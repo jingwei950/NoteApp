@@ -42,11 +42,15 @@ public class AddNote extends AppCompatActivity {
     ProgressBar progressBar;
 
     SharedPrefManager prefManager;
+    NoteDatabase noteDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+
+        //Database
+        noteDB = new NoteDatabase(AddNote.this);
 
         //Assign the toolbar to variable
         toolbar = findViewById(R.id.toolbar);
@@ -80,7 +84,6 @@ public class AddNote extends AppCompatActivity {
                     title = getString(android.R.string.untitled);
 
                     /*TODO add database Insert function here*/
-                    NoteDatabase noteDB = new NoteDatabase(AddNote.this);
                     noteDB.addNote(addNoteTitle.getText().toString().trim(),
                             addNoteContent.getText().toString().trim());
 //                    db.insert(title, content);
@@ -94,9 +97,7 @@ public class AddNote extends AppCompatActivity {
                 else { //When both title and content is not empty, save both
 
 
-
                     /*TODO add database Insert function here*/
-                    NoteDatabase noteDB = new NoteDatabase(AddNote.this);
                     noteDB.addNote(addNoteTitle.getText().toString().trim(),
                             addNoteContent.getText().toString().trim());
 //                    db.insert(title, content);

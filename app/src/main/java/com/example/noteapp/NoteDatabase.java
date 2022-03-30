@@ -45,20 +45,6 @@ public class NoteDatabase extends SQLiteOpenHelper {
                 NOTE_CONTENT + " TEXT);";
 
         db.execSQL(query);
-
-//        String user = "CREATE TABLE " + DATABASE_USER +
-//                "("+
-//                    USER_ID + " INT PRIMARY KEY AUTOINCREMENT, " +
-//                    USER_EMAIL + " TEXT," +
-//                    USER_NAME + " TEXT," +
-//                    USER_PASSWORD + " TEXT," +
-//                    USER_NOTE_ID + " INT REFERENCES " + DATABASE_NOTE + "(" + NOTE_ID + ")" +
-//
-//                ")";
-//
-//        db.execSQL(user);
-
-
     }
 
     @Override

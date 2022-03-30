@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -96,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Floating action button for add new note
         FloatingActionButton addNoteFab = findViewById(R.id.addNoteFab);
+
+        //Make the save fab button to white as the design tint unable to make it white
+        DrawableCompat.setTint(addNoteFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
+
         addNoteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

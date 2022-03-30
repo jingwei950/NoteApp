@@ -16,4 +16,17 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="cardTitleStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="sectionBarStyle">
+        <item name="android:background">@color/violet_light</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="propertiesStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

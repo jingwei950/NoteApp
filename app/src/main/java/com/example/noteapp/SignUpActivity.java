@@ -1,97 +1,92 @@
 package com.example.noteapp;
 
-import android.app.Dialog;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ActionProvider;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
-import java.util.List;
+import com.example.noteapp.model.SharedPrefManager;
+import com.example.noteapp.model.Validation;
 
 public class SignUpActivity extends AppCompatActivity {
+    SharedPrefManager prefManager;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
+    TextView editSignUpEmail;
+    TextView editSignUpUsername;
+    TextView editSignUpPassword;
+    TextView editSignUpRePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_layout);
-        pref = getSharedPreferences("day_night", MODE_PRIVATE);
-        prefEditor = pref.edit();
 
-        getPref();
-    }
-
-    public void getPref(){
-        boolean isNightMode = pref.getBoolean("night_mode", false);
-        setDayNightMode(isNightMode);
-    }
-
-    public void setDayNightMode(boolean isNightMode){
-        if(isNightMode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            prefEditor.putBoolean("night_mode", true);
-            prefEditor.apply();
-        }else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            prefEditor.putBoolean("night_mode", false);
-            prefEditor.apply();
-        }
+        prefManager = new SharedPrefManager(getApplicationContext());
+        editSignUpEmail = findViewById(R.id.editSignUpEmail);
+        editSignUpUsername = findViewById(R.id.editSignUpUsername);
+        editSignUpPassword = findViewById(R.id.editSignUpPassword);
+        editSignUpRePassword = findViewById(R.id.editSignUpRePassword);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void signUpClick(View view){
-        TextView email = findViewById(R.id.editSignUpEmail);
-        TextView username = findViewById(R.id.editSignUpUsername);
-        TextView password = findViewById(R.id.editSignUpPassword);
-        TextView rePassword = findViewById(R.id.editSignUpRePassword);
+        String email = editSignUpEmail.getText().toString();
+        String username = editSignUpUsername.getText().toString();
+        String password = editSignUpPassword.getText().toString();
+        String rePassword = editSignUpRePassword.getText().toString();
 
-        //validate
-        Validation valid = validateFields(email.getText().toString(), username.getText().toString(), password.getText().toString(), rePassword.getText().toString());
-        if(!valid.getValid()){
-            String errorMessage = String.join("\n", valid.getErrorMessage());
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        Validation validation = validateFields(email, username, password, rePassword);
+        //if not valid
+        if(!validation.getValid()){
+            String errorMessage = String.join("\n", validation.getErrorMessageList());
+            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        }else{
+            //check if exists in database
+            /*
+            if(exists in database){
+                Toast exists
+            }else{
+                Add to database
+            }
+            */
         }
-        //check exists in database
-
-
-
-        //add to database
     }
 
+    //Validation
     public Validation validateFields(String email, String username, String password, String rePassword){
-        Validation valid = new Validation();
-        valid.setValid(true);
-
-        if(!email.contains("@")){
-            valid.setValid(false);
-            valid.addErrorMessage("Invalid Email");
-        }
+        Validation validation = new Validation();
+        validation.setValid(true);
 
         if(email.isEmpty() || username.isEmpty() || password.isEmpty() || rePassword.isEmpty()){
-            valid.setValid(false);
-            valid.addErrorMessage("Empty Fields");
-        }
-        if(!password.equals(rePassword)){
+            validation.setValid(false);
+            validation.addErrorMessage("Empty Fields");
+        }else{
+            if(!email.contains("@")){
+                validation.setValid(false);
+                validation.addErrorMessage("Invalid Email");
+            }
+            if(!password.equals(rePassword)){
 
-            valid.setValid(false);
-            valid.addErrorMessage("Password are not the same");
+                validation.setValid(false);
+                validation.addErrorMessage("Password are not the same");
+            }
         }
-        return valid;
+        return validation;
     }
 
-    public boolean checkExistsInDatabase(){
+    public boolean existsInDatabase(String email, String username){
         boolean exists = false;
 
         return exists;
+    }
+
+    public void addToDatabase(){
+
     }
 }

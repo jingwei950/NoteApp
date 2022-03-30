@@ -14,21 +14,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textDialogLineWidth"
+            android:id="@+id/textDialogLetterSpacing"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center" />
 
         <ImageButton
-            android:id="@+id/imageButtonIncreaseLineWidth"
+            android:id="@+id/imageButtonIncreaseLetterSpacing"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             app:srcCompat="@drawable/up_arrow" />
 
         <ImageButton
-            android:id="@+id/imageButtonDecreaseLineWidth"
+            android:id="@+id/imageButtonDecreaseLetterSpacing"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"

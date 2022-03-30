@@ -41,7 +41,7 @@
                 android:padding="5dp"
                 android:text="TextView"
                 android:textAlignment="viewStart"
-                android:textColor="#000"
+                android:textColor="#000000"
                 android:textSize="15sp"
                 android:textStyle="normal|italic"
                 app:layout_constraintBottom_toTopOf="@+id/cardView"
@@ -53,6 +53,7 @@
                 android:id="@+id/cardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="5dp"
                 app:contentPadding="5dp"
@@ -60,8 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                android:orientation="horizontal">
+                app:layout_constraintVertical_bias="1.0">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -83,7 +83,6 @@
                         android:padding="2dp"
                         android:text="TextView"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"

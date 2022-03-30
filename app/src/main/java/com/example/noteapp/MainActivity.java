@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.noteapp.model.Adapter;
+import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<String> titles = new ArrayList<>();    //For storing all the note titles
     List<String> contents = new ArrayList<>();  //For storing all the note contents
     List<Note> notes = new ArrayList<Note>();   //For storing all the notes (titles and contents)
+
+    SharedPrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        getPref();
     }
 
     /* TODO 3 (Display notes) - Get all the titles and contents from database*/
@@ -219,5 +224,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "You have clicked on some button", Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    public void getPref(){
+        prefManager = new SharedPrefManager(getApplicationContext());
+        String isNightMode = prefManager.get(SharedPrefManager.NIGHT_MODE, SharedPrefManager.NIGHT_MODE_DEFAULT);
+        prefManager.setDayNightMode(isNightMode);
     }
 }

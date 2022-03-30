@@ -3,6 +3,7 @@ package com.example.noteapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -33,6 +34,8 @@ public class NoteActivity extends AppCompatActivity {
     private EditText content;                 //Edit text content
     private View view;                        //View for this activity
     private FloatingActionButton saveNoteFab; //Floating action button for saving note
+
+    SharedPrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class NoteActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        getPref();
     }
 
     @Override
@@ -93,5 +98,25 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getPref(){
+        prefManager = new SharedPrefManager(getApplicationContext());
+
+        //Typeface
+        String typeface = prefManager.get(SharedPrefManager.TYPEFACE, SharedPrefManager.TYPEFACE_DEFAULT);
+        prefManager.setTypeface(content, typeface);
+
+        //Font Size
+        String fontSize = prefManager.get(SharedPrefManager.FONT_SIZE, SharedPrefManager.FONT_SIZE_DEFAULT);
+        prefManager.setFontSize(content, fontSize);
+
+        //Line Height
+        String lineHeight = prefManager.get(SharedPrefManager.LINE_HEIGHT, SharedPrefManager.LINE_HEIGHT_DEFAULT);
+        prefManager.setLineHeight(content, lineHeight);
+
+        //Letter Spacing
+        String letterSpacing = prefManager.get(SharedPrefManager.LETTER_SPACING, SharedPrefManager.LETTER_SPACING_DEFAULT);
+        prefManager.setLetterSpacing(content, letterSpacing);
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileFragment">
+
+    <TextView
+        android:id="@+id/textProfile"
+        style="@style/sectionBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:elevation="2dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:outlineAmbientShadowColor="#757575"
+        android:paddingHorizontal="15dp"
+        android:text="Profile"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textProfileUsername"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="15dp"
+        android:text="Username" />
+
+    <TextView
+        android:id="@+id/textProfileEmail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="15dp"
+        android:text="Email" />
+
+    <TextView
+        android:id="@+id/textProfilePassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="sans-serif"
+        android:paddingHorizontal="15dp"
+        android:text="Password" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Login"
+        android:textAllCaps="false" />
+
+</LinearLayout>

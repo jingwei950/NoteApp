@@ -1,4 +1,4 @@
-package com.example.noteapp;
+package com.example.noteapp.model;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class Validation {
         this.valid = valid;
     }
 
-    public ArrayList<String> getErrorMessage(){
+    public ArrayList<String> getErrorMessageList(){
         return errorMessage;
     }
 

@@ -23,4 +23,10 @@
     <!--Profile activity strings-->
     <string name="profile">Profile page</string>
     <string name="title_activity_profile1">ProfileActivity1</string>
+    <string name="line_height_out_of_range">Height range between 1.0 and 4.0</string>
+    <string name="letter_spacing_out_of_range">Spacing range between 0.0 and 1.0</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

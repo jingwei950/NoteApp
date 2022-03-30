@@ -38,6 +38,7 @@ public class AddNote extends AppCompatActivity {
     EditText addNoteTitle;
     EditText addNoteContent;
     Toolbar toolbar;
+    FloatingActionButton saveFab;
     ProgressBar progressBar;
 
     SharedPrefManager prefManager;
@@ -57,7 +58,7 @@ public class AddNote extends AppCompatActivity {
         addNoteContent = findViewById(R.id.addNoteContent);
 
         //Floating action button for saving the notes
-        FloatingActionButton saveFab = findViewById(R.id.saveFab);
+        saveFab = findViewById(R.id.saveFab);
 
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
@@ -79,7 +80,10 @@ public class AddNote extends AppCompatActivity {
                     title = getString(android.R.string.untitled);
 
                     /*TODO add database Insert function here*/
-                    //db.insert(title, content);
+                    NoteDatabase noteDB = new NoteDatabase(AddNote.this);
+                    noteDB.addNote(addNoteTitle.getText().toString().trim(),
+                            addNoteContent.getText().toString().trim());
+//                    db.insert(title, content);
 
                     //Save the notes
                     Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
@@ -92,7 +96,10 @@ public class AddNote extends AppCompatActivity {
 
 
                     /*TODO add database Insert function here*/
-                    //db.insert(title, content);
+                    NoteDatabase noteDB = new NoteDatabase(AddNote.this);
+                    noteDB.addNote(addNoteTitle.getText().toString().trim(),
+                            addNoteContent.getText().toString().trim());
+//                    db.insert(title, content);
 
                     //Save the notes
                     Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();

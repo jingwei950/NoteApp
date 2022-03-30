@@ -77,6 +77,10 @@ public class NoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 /*TODO add database Insert function here*/
+                NoteDatabase noteDB = new NoteDatabase(NoteActivity.this);
+                noteDB.addNote(title.getText().toString().trim(),
+                        content.getText().toString().trim());
+
                 //db.update(title, content);
                 Toast.makeText(view.getContext(), "You have clicked on save button, saved title: " + title.getText().toString() +
                         " content: " + content.getText().toString() , Toast.LENGTH_SHORT).show();

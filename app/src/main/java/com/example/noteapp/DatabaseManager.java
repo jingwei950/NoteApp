@@ -8,9 +8,9 @@ import java.sql.SQLDataException;
 
 
 public class DatabaseManager {
-    private NoteDatabase dbHelper;
-    private Context context;
-    private SQLiteDatabase database;
+    public NoteDatabase dbHelper;
+    public Context context;
+    public SQLiteDatabase database;
 
     public DatabaseManager(Context ctx){
 
@@ -58,7 +58,8 @@ public class DatabaseManager {
     public void deleteNote (long noteID) {
         database.delete(NoteDatabase.DATABASE_NOTE, NoteDatabase.NOTE_ID + "=" + noteID, null);
     }
-    //Tested
+
+    
     public Cursor readAllData(){
         String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();

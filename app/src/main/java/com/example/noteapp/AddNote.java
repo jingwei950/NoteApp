@@ -40,6 +40,7 @@ public class AddNote extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton saveFab;
     ProgressBar progressBar;
+    DatabaseManager dbManager;
 
     SharedPrefManager prefManager;
     NoteDatabase noteDB;
@@ -67,51 +68,55 @@ public class AddNote extends AppCompatActivity {
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
 
-        saveFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Get the title and content of edit text
-                String title = addNoteTitle.getText().toString();
-                String content = addNoteContent.getText().toString();
-
-                if(title.isEmpty() && content.isEmpty()){ //When both title and content is empty, note will not be save
-                    Toast.makeText(AddNote.this, "Note not save, field is empty", Toast.LENGTH_SHORT).show();
-                }
-                else if(title.isEmpty()){ //When only title is empty assign "<Untitled>" to title and save both title and content
-
-                    //If title is empty assign "<Untitled>" to variable title
-                    title = getString(android.R.string.untitled);
-
-                    /*TODO add database Insert function here*/
-                    noteDB.addNote(addNoteTitle.getText().toString().trim(),
-                            addNoteContent.getText().toString().trim());
-//                    db.insert(title, content);
-
-                    //Save the notes
-                    Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
-
-                    //Go back to the main page after saving the notes
-                    onBackPressed();
-                }
-                else { //When both title and content is not empty, save both
-
-
-                    /*TODO add database Insert function here*/
-                    noteDB.addNote(addNoteTitle.getText().toString().trim(),
-                            addNoteContent.getText().toString().trim());
-//                    db.insert(title, content);
-
-                    //Save the notes
-                    Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
-
-                    //Go back to the main page after saving the notes
-                    onBackPressed();
-                }
-            }
-        });
+        // Initialize DataBaseManager
+        dbManager = new DatabaseManager( this);
+        try{
+            dbManager.open();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         getPref();
+    }
+
+
+    //addNoteBtn Function - Adds data into Table
+    public void btnInsertPressed(View v){
+        //Get the title and content of edit text
+        String title = addNoteTitle.getText().toString();
+        String content = addNoteContent.getText().toString();
+
+        if(title.isEmpty() && content.isEmpty()){ //When both title and content is empty, note will not be save
+            Toast.makeText(AddNote.this, "Note not save, field is empty", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(title.isEmpty()){ //When only title is empty assign "<Untitled>" to title and save both title and content
+
+            //If title is empty assign "<Untitled>" to variable title
+            title = getString(android.R.string.untitled);
+
+            /*TODO add database Insert function here*/
+            dbManager.insertNote(title, content);
+
+            //Save the notes
+            Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
+
+            //Go back to the main page after saving the notes
+            onBackPressed();
+        }
+        else { //When both title and content is not empty, save both
+
+            /*TODO add database Insert function here*/
+            dbManager.insertNote(title, content);
+
+            //Save the notes
+            Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
+
+            //Go back to the main page after saving the notes
+            onBackPressed();
+        }
+
     }
 
     @Override

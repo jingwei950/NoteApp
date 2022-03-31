@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,27 +13,20 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import org.w3c.dom.Text;
 
 public class NoteActivity extends AppCompatActivity {
 
     private EditText title;                   //Edit text title
     private EditText content;                 //Edit text content
     private View view;                        //View for this activity
-    private FloatingActionButton saveNoteFab; //Floating action button for saving note
-
+    private FloatingActionButton updateNoteBtn; //Floating action button for saving note
+    DatabaseManager dbManager;
     SharedPrefManager prefManager;
 
     @Override
@@ -68,29 +60,35 @@ public class NoteActivity extends AppCompatActivity {
         view.setBackgroundColor(getResources().getColor(data.getIntExtra("color", 0))); //Set the view's color passed from adapter
 
         //Floating action button for saving the notes
-        saveNoteFab = findViewById(R.id.saveNoteFab);
+        updateNoteBtn = findViewById(R.id.updateNoteBtn);
 
         //Make the save fab button to white as the design tint unable to make it white
-        DrawableCompat.setTint(saveNoteFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
+        DrawableCompat.setTint(updateNoteBtn.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
 
-        saveNoteFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*TODO add database Insert function here*/
-                NoteDatabase noteDB = new NoteDatabase(NoteActivity.this);
-                noteDB.addNote(title.getText().toString().trim(),
-                        content.getText().toString().trim());
-
-                //db.update(title, content);
-                Toast.makeText(view.getContext(), "You have clicked on save button, saved title: " + title.getText().toString() +
-                        " content: " + content.getText().toString() , Toast.LENGTH_SHORT).show();
-
-                //Go back to main page
-                onBackPressed();
-            }
-        });
+        // Initialize DataBaseManager
+        dbManager = new DatabaseManager( this);
+        try{
+            dbManager.open();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         getPref();
+    }
+
+
+    //updateNoteBtn Function - Updates Data in Table
+    public void btnUpdatePressed(View v){
+//        dbManager.insertNote(title.getText().toString(), content.getText().toString());
+        dbManager.updateNote(title.getText().toString(), content.getText().toString());
+
+        //db.update(title, content);
+        Toast.makeText(view.getContext(), "You have clicked on save button, saved title: " + title.getText().toString() +
+                " content: " + content.getText().toString() , Toast.LENGTH_SHORT).show();
+
+        //Go back to main page
+        onBackPressed();
     }
 
     @Override

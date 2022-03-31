@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<String> contents = new ArrayList<>();  //For storing all the note contents
     List<Note> notes = new ArrayList<Note>();   //For storing all the notes (titles and contents)
 
+    //test
     SharedPrefManager prefManager;
 
     @Override

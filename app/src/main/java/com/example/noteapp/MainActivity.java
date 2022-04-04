@@ -38,12 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navView;             //The navigation view that comes out when click on the toggle button
     RecyclerView noteLists;             //The view for dynamic contents on the main page, for different notes
     Adapter adapter;                    //The adapter to handle the RecyclerView, so that it can display multiple views(notes) on screen
-
-    List<String> titles = new ArrayList<>();    //For storing all the note titles
-    List<String> contents = new ArrayList<>();  //For storing all the note contents
-    List<Note> notes = new ArrayList<Note>();   //For storing all the notes (titles and contents)
-
-    //jing wei edit
+    NoteDatabase myDB;
+    ArrayList<String> titles, contents;    //For storing all the note titles
     SharedPrefManager prefManager;
 
     @Override
@@ -71,24 +67,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.setDrawerIndicatorEnabled(true); //Make sure the hamburger button is shown
         drawerToggle.syncState(); //Inform ActionBarDrawerToggle if it is open or close currently
 
-        /*TODO 1 (Display notes) - Get the query selectall and process the data to display notes in main page*/
-//      processDBData(dm.selectall());
+        //Initialize NoteDatabase and Arraylist
+        myDB = new NoteDatabase(MainActivity.this);
+        titles = new ArrayList<>();
+        contents = new ArrayList<>();
 
-        titles.add("1st note title.");
-        contents.add("1st note content");
-
-        titles.add("2nd note title.");
-        contents.add("2nd note content. 2nd note content. 2nd note content. 2nd note content. 2nd note content. ");
-
-        titles.add("3rd note title.");
-        contents.add("3rd note content");
-
-        /*TODO 2 (Display notes) - Loop thru notes*/
-        //Loop thru notes ArrayList and add each titles and notes into their respective ArrayList
-//        for(int i = 0; i < notes.size(); i++){
-//            titles.add(notes.get(i).getTitle());
-//            contents.add(notes.get(i).getContent());
-//        }
+        //StoreDataArray method
+        StoreDataArray();
 
         //Passing the List of titles and contents into adapter
         adapter = new Adapter(titles, contents);
@@ -96,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         noteLists.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         //Set the adapter of RecyclerView
         noteLists.setAdapter(adapter);
+
 
         //Floating action button for add new note
         FloatingActionButton addNoteFab = findViewById(R.id.addNoteFab);
@@ -112,27 +98,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         getPref();
+
+
     }
 
+
+
     /* TODO 3 (Display notes) - Get all the titles and contents from database*/
-    //Process all titles and contents from database
-    public void processDBData(Cursor c){
-
-        String noteTitle;
-        String noteContent;
-
-        //Loop thru and get all the titles and contents
-        while (c.moveToNext())
-        {
-            Log.i("displayRecords", c.getString(1)+ " " +c.getString(2));
-
-            noteTitle = c.getString(1);
-            noteContent = c.getString(2);
-            notes.add(new Note(noteTitle, noteContent)); //Add all titles and contents in respective ArrayList
-
-            //OR
-//            titles.add(noteTitle);
-//            contents.add(noteContent);
+    //Function for Storing Data into Array
+    void StoreDataArray(){
+        Cursor cursor = myDB.readAllData();
+        if(cursor.getCount() == 0 ){
+            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+        }else{
+            while(cursor.moveToNext()){
+                titles.add(cursor.getString(1));
+                contents.add(cursor.getString(2));
+            }
         }
     }
 

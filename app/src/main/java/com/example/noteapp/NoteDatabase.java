@@ -67,6 +67,34 @@ public class NoteDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Add data into NoteTable
+    public void addNote (String title, String content){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(NOTE_TITLE, title);
+        cv.put(NOTE_CONTENT, content);
+
+        long result = db.insert(NoteDatabase.DATABASE_NOTE, null, cv);
+        if(result == -1 ){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor readAllData(){
+        String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+
 
 
 }

@@ -35,12 +35,13 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.noteapp.databinding.ActivityAddNoteBinding;
 
 public class AddNote extends AppCompatActivity {
-    EditText addNoteTitle;
-    EditText addNoteContent;
+    EditText addNoteTitle, addNoteContent;
+
     Toolbar toolbar;
     FloatingActionButton saveFab;
     ProgressBar progressBar;
     DatabaseManager dbManager;
+    NoteDatabase myDB;
 
     SharedPrefManager prefManager;
     NoteDatabase noteDB;
@@ -97,7 +98,8 @@ public class AddNote extends AppCompatActivity {
             title = getString(android.R.string.untitled);
 
             /*TODO add database Insert function here*/
-            dbManager.insertNote(title, content);
+            NoteDatabase myDB = new NoteDatabase(AddNote.this);
+            myDB.addNote(title, content);
 
             //Save the notes
             Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
@@ -108,7 +110,8 @@ public class AddNote extends AppCompatActivity {
         else { //When both title and content is not empty, save both
 
             /*TODO add database Insert function here*/
-            dbManager.insertNote(title, content);
+            NoteDatabase myDB = new NoteDatabase(AddNote.this);
+            myDB.addNote(title, content);
 
             //Save the notes
             Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();

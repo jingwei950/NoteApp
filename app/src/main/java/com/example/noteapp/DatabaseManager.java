@@ -3,6 +3,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.sql.SQLDataException;
 
@@ -26,13 +27,6 @@ public class DatabaseManager {
 
     public void close(){
         dbHelper.close();
-    }
-    //Add data into NoteTable
-    public void insertNote (String title, String content){
-        ContentValues cv = new ContentValues();
-        cv.put(NoteDatabase.NOTE_TITLE, title);
-        cv.put(NoteDatabase.NOTE_CONTENT, content);
-        database.insert(NoteDatabase.DATABASE_NOTE, null, cv);
     }
 
     //Get data in NoteTable
@@ -59,17 +53,10 @@ public class DatabaseManager {
         database.delete(NoteDatabase.DATABASE_NOTE, NoteDatabase.NOTE_ID + "=" + noteID, null);
     }
 
-    
-    public Cursor readAllData(){
-        String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
-        SQLiteDatabase db = this.dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
-        if(db != null){
-            cursor = db.rawQuery(query, null);
-        }
-        return cursor;
-    }
+
+    
+
 
 
 

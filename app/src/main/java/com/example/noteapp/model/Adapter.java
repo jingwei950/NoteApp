@@ -20,11 +20,11 @@ import java.util.Random;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
-    private final List<String> listOfTitles;
-    private final List<String> listOfContent;
+    private final ArrayList<String> listOfTitles;
+    private final ArrayList<String> listOfContent;
 
     //Constructor
-    public Adapter(List<String> title, List<String> content){
+    public Adapter(ArrayList<String> title, ArrayList<String> content){
         //Setting the values passed into this Adapter to the List of this Adapter
         this.listOfTitles = title;
         this.listOfContent = content;

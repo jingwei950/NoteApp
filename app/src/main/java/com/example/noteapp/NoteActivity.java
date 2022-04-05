@@ -3,6 +3,7 @@ package com.example.noteapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.noteapp.model.Adapter;
 import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -10,9 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
@@ -20,14 +25,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import java.util.ArrayList;
+
 public class NoteActivity extends AppCompatActivity {
 
+    private TextView noteActivityTitle;       //Text View noteActivityTitle
     private EditText title;                   //Edit text title
     private EditText content;                 //Edit text content
     private View view;                        //View for this activity
     private FloatingActionButton updateNoteBtn; //Floating action button for saving note
     DatabaseManager dbManager;
     SharedPrefManager prefManager;
+    long noteID;        //Variable for storing note ID
+    String noteTitle;   //Variable for storing note title
+    String noteContent; //Variable for storing note content
+    NoteDatabase db;    //Note database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +53,35 @@ public class NoteActivity extends AppCompatActivity {
         //Show back arrow on the top left of action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Get the data passed adapter
+        //Get the data passed from adapter
         Intent data = getIntent();
+        noteID = data.getLongExtra("id", 0);  //Get the id passed from adapter
+        noteTitle = data.getStringExtra("title");       //Get the Title passed from adapter
+        noteContent = data.getStringExtra("content");   //Get the Content passed from adapter
+
+
+        //Initialize Note database
+        db = new NoteDatabase(this);
+        Note note = db.getNote(noteID); //Get the note ID
 
         //Assign views to variables
+        noteActivityTitle = findViewById(R.id.noteActivityTitle);
         title = findViewById(R.id.noteEditTitle);
         content = findViewById(R.id.noteEditContent);
         view = findViewById(R.id.note);
 
         //Allow the scrolling when the content have too many words
         content.setMovementMethod(new ScrollingMovementMethod());
+
+        //Check if TextView noteActivityTitle is empty or not null
+        if(noteActivityTitle.getText().toString().equals("") || noteActivityTitle.getText() != null){
+            //Set the text to <Untitled> if it is empty or not null
+            noteActivityTitle.setText(getString(android.R.string.untitled));
+        }
+        else{ //Else when the TextView is not empty
+            //Set the text if the title exists
+            noteActivityTitle.setText(data.getStringExtra("title"));
+        }
 
         //Set the text that is passed from the adapter
         title.setText(data.getStringExtra("title"));    //Set the title passed from adapter
@@ -80,15 +111,29 @@ public class NoteActivity extends AppCompatActivity {
 
     //updateNoteBtn Function - Updates Data in Table
     public void btnUpdatePressed(View v){
-//        dbManager.insertNote(title.getText().toString(), content.getText().toString());
-        dbManager.updateNote(title.getText().toString(), content.getText().toString());
+        Note note = new Note(noteID, title.getText().toString(), content.getText().toString());
+        db = new NoteDatabase(getApplicationContext());
+        db.updateNote(note);    //Run the function of updateNote in database to update
 
-        //db.update(title, content);
-        Toast.makeText(view.getContext(), "You have clicked on save button, saved title: " + title.getText().toString() +
-                " content: " + content.getText().toString() , Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Title: " + title.getText().toString() +
+                " Content: " + content.getText().toString() + " saved.", Toast.LENGTH_SHORT).show();
 
         //Go back to main page
-        onBackPressed();
+        goToMain();
+    }
+
+    //Function for going back to main page
+    private void goToMain(){
+        Intent goMain = new Intent(this,MainActivity.class);
+        startActivity(goMain); //Start MainActivity
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Show delete button icon on menu
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.delete_note_menu,menu);
+        return true;
     }
 
     @Override
@@ -98,7 +143,12 @@ public class NoteActivity extends AppCompatActivity {
             //In-built android back function
             onBackPressed(); //Make the action bar back button to go back to previous activity
         }
-
+        else if (item.getItemId() == R.id.deleteNote){ //Check the id of item clicked is the id of delete button icon on action bar
+            Note note = new Note(noteID, noteTitle, noteContent);
+            NoteDatabase db = new NoteDatabase(view.getContext());
+            db.deleteNote(noteID);  //Run the function of deleteNote in database to delete
+            goToMain();             //Got back to MainActivity
+        }
         return super.onOptionsItemSelected(item);
     }
 

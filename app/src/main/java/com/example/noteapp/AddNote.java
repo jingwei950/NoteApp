@@ -1,5 +1,6 @@
 package com.example.noteapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -9,6 +10,7 @@ import com.example.noteapp.model.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,8 +33,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.noteapp.model.Adapter;
 
 import com.example.noteapp.databinding.ActivityAddNoteBinding;
+
+import java.util.ArrayList;
 
 public class AddNote extends AppCompatActivity {
     EditText addNoteTitle, addNoteContent;
@@ -45,7 +52,6 @@ public class AddNote extends AppCompatActivity {
 
     SharedPrefManager prefManager;
     NoteDatabase noteDB;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +74,6 @@ public class AddNote extends AppCompatActivity {
 
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
-
         // Initialize DataBaseManager
         dbManager = new DatabaseManager( this);
         try{
@@ -77,7 +82,6 @@ public class AddNote extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
-
         getPref();
     }
 
@@ -88,38 +92,48 @@ public class AddNote extends AppCompatActivity {
         String title = addNoteTitle.getText().toString();
         String content = addNoteContent.getText().toString();
 
-        if(title.isEmpty() && content.isEmpty()){ //When both title and content is empty, note will not be save
-            Toast.makeText(AddNote.this, "Note not save, field is empty", Toast.LENGTH_SHORT).show();
-        }
+        //Use the title and content get from edit text for the new note
+        Note note = new Note(title, content);
 
+        //Check if both title and content is empty, if it is note will not be save
+        if(title.isEmpty() && content.isEmpty()){
+            //Make a toast and let user know
+            Toast.makeText(AddNote.this, "Please enter something in the fields to save", Toast.LENGTH_SHORT).show();
+        }
         else if(title.isEmpty()){ //When only title is empty assign "<Untitled>" to title and save both title and content
 
             //If title is empty assign "<Untitled>" to variable title
-            title = getString(android.R.string.untitled);
+            addNoteTitle.setText(getString(android.R.string.untitled));
 
-            /*TODO add database Insert function here*/
-            NoteDatabase myDB = new NoteDatabase(AddNote.this);
-            myDB.addNote(title, content);
+            //Insert the newly added note into database
+            myDB = new NoteDatabase(AddNote.this);
+            myDB.addNote(note);
 
-            //Save the notes
+            //Make a toast to inform user note saved
             Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
 
             //Go back to the main page after saving the notes
-            onBackPressed();
+            backToMain();
         }
         else { //When both title and content is not empty, save both
 
-            /*TODO add database Insert function here*/
-            NoteDatabase myDB = new NoteDatabase(AddNote.this);
-            myDB.addNote(title, content);
+            //Insert the newly added note into database
+            myDB = new NoteDatabase(AddNote.this);
+            myDB.addNote(note);
 
-            //Save the notes
+            //Make a toast to inform user note saved
             Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
 
             //Go back to the main page after saving the notes
-            onBackPressed();
+            backToMain();
         }
 
+    }
+
+    //Function for going back to MainActivity
+    private void backToMain(){
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        startActivity(mainActivity);
     }
 
     @Override

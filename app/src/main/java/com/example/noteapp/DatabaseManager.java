@@ -3,6 +3,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.sql.SQLDataException;
@@ -39,14 +40,14 @@ public class DatabaseManager {
         return cursor;
     }
 
-    //Update data in NoteTable
-    public int updateNote ( String title, String content) {
-        ContentValues cv = new ContentValues();
-        cv.put(NoteDatabase.NOTE_TITLE, title);
-        cv.put(NoteDatabase.NOTE_CONTENT, content);
-        int ret = database.update(NoteDatabase.DATABASE_NOTE, cv, "title = ?", new String[]{title});
-        return ret;
-    }
+//    //Update data in NoteTable
+//    public int updateNote ( String title, String content) {
+//        ContentValues cv = new ContentValues();
+//        cv.put(NoteDatabase.NOTE_TITLE, title);
+//        cv.put(NoteDatabase.NOTE_CONTENT, content);
+//        int ret = database.update(NoteDatabase.DATABASE_NOTE, cv, "title = ?", new String[]{title});
+//        return ret;
+//    }
 
     //Delete data in NoteTable
     public void deleteNote (long noteID) {

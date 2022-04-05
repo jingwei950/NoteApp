@@ -3,6 +3,7 @@ package com.example.noteapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -19,6 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noteapp.model.Adapter;
@@ -38,9 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navView;             //The navigation view that comes out when click on the toggle button
     RecyclerView noteLists;             //The view for dynamic contents on the main page, for different notes
     Adapter adapter;                    //The adapter to handle the RecyclerView, so that it can display multiple views(notes) on screen
-    NoteDatabase myDB;
-    ArrayList<String> titles, contents;    //For storing all the note titles
+    NoteDatabase myDB;                  //Note database
+    ArrayList<String> titles, contents; //For storing all the note titles
     SharedPrefManager prefManager;
+    ArrayList<Note> allNotes;           //Note arraylist for storing all notes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +74,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Initialize NoteDatabase and Arraylist
         myDB = new NoteDatabase(MainActivity.this);
-        titles = new ArrayList<>();
-        contents = new ArrayList<>();
 
-        //StoreDataArray method
-        StoreDataArray();
+        //Select all data in database and store it in List
+        allNotes = myDB.getAllNotes();
 
-        //Passing the List of titles and contents into adapter
-        adapter = new Adapter(titles, contents);
+        //Passing the ArrayList of notes into adapter
+        adapter = new Adapter(allNotes);
         //Set the layout of each note to show staggered, 2 rows vertically
         noteLists.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         //Set the adapter of RecyclerView
         noteLists.setAdapter(adapter);
-
 
         //Floating action button for add new note
         FloatingActionButton addNoteFab = findViewById(R.id.addNoteFab);
@@ -89,39 +91,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(addNoteFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
 
+        //On click listener for add note fab
         addNoteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Go to add note activity
-                startActivity(new Intent(view.getContext(), AddNote.class));
+                //Go to add note activity when addNoteFab is clicked
+                Intent addNote =  new Intent(view.getContext(), AddNote.class);
+                startActivity(addNote);
             }
         });
 
         getPref();
-
-
     }
 
-
-
-    /* TODO 3 (Display notes) - Get all the titles and contents from database*/
-    //Function for Storing Data into Array
-    void StoreDataArray(){
-        Cursor cursor = myDB.readAllData();
-        if(cursor.getCount() == 0 ){
-            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
-        }else{
-            while(cursor.moveToNext()){
-                titles.add(cursor.getString(1));
-                contents.add(cursor.getString(2));
-            }
-        }
-    }
+//    /* TODO 3 (Display notes) - Get all the titles and contents from database*/
+//    //Function for Storing Data into Array
+//    void StoreDataArray(){
+//        Cursor cursor = myDB.readAllData();
+//        if(cursor.getCount() == 0 ){
+//            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+//        }else{
+//            while(cursor.moveToNext()){
+//                titles.add(cursor.getString(1));
+//                contents.add(cursor.getString(2));
+//            }
+//        }
+//    }
 
     //Create options menu that contains 3 dot menu and search bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu, this adds items to the action bar if it is present
         MenuInflater inflater = getMenuInflater();
 
         //Show 3 dots menu (options menu)
@@ -129,6 +129,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Show Search bar
         inflater.inflate(R.menu.search_bar, menu);
 
+        //MenuItem of search bar
+        MenuItem searchItem = menu.findItem(R.id.search_bar);
+        //Search View
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        //Set the query text listener when user type in the search bar
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) { //Check the text change filter
+                //Pass the text of user input into the adapter to trigger performFiltering callback function
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 

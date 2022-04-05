@@ -5,10 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoteDatabase extends SQLiteOpenHelper {
 
@@ -67,34 +71,105 @@ public class NoteDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //Add data into NoteTable
-    public void addNote (String title, String content){
+//    //Add data into NoteTable ORION'S CODE
+//    public void addNote (String title, String content){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(NOTE_TITLE, title);
+//        cv.put(NOTE_CONTENT, content);
+//
+//        long result = db.insert(NoteDatabase.DATABASE_NOTE, null, cv);
+//        if(result == -1 ){
+//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+//        } else{
+//            Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    //Function to add data into database
+    public long addNote (Note note){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(NOTE_TITLE, title);
-        cv.put(NOTE_CONTENT, content);
+        cv.put(NOTE_TITLE, note.getTitle());
+        cv.put(NOTE_CONTENT, note.getContent());
 
         long result = db.insert(NoteDatabase.DATABASE_NOTE, null, cv);
+        Log.i("Inserted", "ID: " + result);
+
         if(result == -1 ){
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
         } else{
             Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
         }
+
+        return result;
     }
 
-    public Cursor readAllData(){
-        String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
-        SQLiteDatabase db = this.getReadableDatabase();
+    //Function to get specific note according to ID
+    public Note getNote(long id){
+        //SELECT * FROM TABLE WHERE ID = 1
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(DATABASE_NOTE, new String[]{NOTE_ID, NOTE_TITLE, NOTE_CONTENT},
+                NOTE_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
 
-        Cursor cursor = null;
-        if(db != null){
-            cursor = db.rawQuery(query, null);
+        if(cursor != null){
+            cursor.moveToFirst();
         }
-        return cursor;
+
+        return new Note(cursor.getLong(0), cursor.getString(1), cursor.getString(2));
     }
 
+//    //Get all notes ORION'S CODE
+//    public Cursor readAllData(){
+//        String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//        Cursor cursor = null;
+//        if(db != null){
+//            cursor = db.rawQuery(query, null);
+//        }
+//        return cursor;
+//    }
 
+    //Function to get all notes in the database
+    public ArrayList<Note> getAllNotes(){
+        ArrayList<Note> allNotes = new ArrayList<>();
+        String query = "SELECT * FROM " + DATABASE_NOTE+" ORDER BY "+NOTE_ID+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Note note = new Note();
+                note.setID(Long.parseLong(cursor.getString(0)));
+                note.setTitle(cursor.getString(1));
+                note.setContent(cursor.getString(2));
+                allNotes.add(note);
+            }while (cursor.moveToNext());
+        }
 
+        return allNotes;
+
+    }
+
+    //Function to update the title and/or content of specific note according to ID
+    public int updateNote(Note note){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues c = new ContentValues();
+        Log.d("Edited", "Edited Title: -> "+ note.getTitle() + "\n ID -> "+note.getID());
+        c.put(NOTE_TITLE,note.getTitle());
+        c.put(NOTE_CONTENT,note.getContent());
+        return db.update(DATABASE_NOTE, c,NOTE_ID+"=?",new String[]{String.valueOf(note.getID())});
+    }
+
+    //Function to delete specific note in database according to ID
+    public void deleteNote(long id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_NOTE,NOTE_ID+"=?",new String[]{
+                String.valueOf(id)
+        });
+        db.close();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.example.noteapp;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import com.example.noteapp.model.Validation;
 public class ProfileFragment extends Fragment {
     View rootView;
     Button buttonLogin;
+    Button buttonSignup;
     TextView textProfileUserName;
     TextView textProfileEmail;
     TextView textProfilePassword;
@@ -56,11 +58,13 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         buttonLogin = rootView.findViewById(R.id.buttonLogin);
+        buttonSignup = rootView.findViewById(R.id.buttonSignUpPage);
         textProfileUserName = rootView.findViewById(R.id.textProfileUsername);
         textProfileEmail = rootView.findViewById(R.id.textProfileEmail);
         textProfilePassword = rootView.findViewById(R.id.textProfilePassword);
 
         setButtonLoginClick();
+        setButtonSignupClick();
         setUsernameClick();
         setEmailClick();
         setPasswordClick();
@@ -71,10 +75,23 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //To Login Activity
-                Log.i("profile", "button working");
+
             }
         });
     }
+
+    public void setButtonSignupClick(){
+        buttonSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //To SignUp Activity
+                Intent signUp =  new Intent(view.getContext(), SignUpActivity.class);
+                startActivity(signUp);
+            }
+        });
+    }
+
+
 
     public void setUsernameClick(){
         textProfileUserName.setOnClickListener(new View.OnClickListener() {

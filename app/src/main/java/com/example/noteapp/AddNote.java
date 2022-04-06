@@ -74,14 +74,7 @@ public class AddNote extends AppCompatActivity {
 
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
-        // Initialize DataBaseManager
-        dbManager = new DatabaseManager( this);
-        try{
-            dbManager.open();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+
         getPref();
     }
 

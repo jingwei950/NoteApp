@@ -16,10 +16,10 @@ import java.util.List;
 
 public class NoteDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "NoteDatabase.db";
     public static final String DATABASE_NOTE = "notesTable";
-    private static final String DATABASE_USER = "userTable";
+    public static final String DATABASE_USER = "userTable";
 
     //Column name for database notesTable
     public static final String NOTE_ID = "noteID";
@@ -27,11 +27,10 @@ public class NoteDatabase extends SQLiteOpenHelper {
     public static final String NOTE_CONTENT = "content";
 
     //Column name for database userTable
-    private static final String USER_ID = "userID";
-    private static final String USER_EMAIL = "email";
-    private static final String USER_NAME = "username";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_NOTE_ID = "noteID";
+    public static final String USER_ID = "userID";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_NAME = "username";
+    public static final String USER_PASSWORD = "password";
     private Context context;
 
     public NoteDatabase(@Nullable Context context){
@@ -48,26 +47,27 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
     //User Table Query
     private static final String CREATE_USER_QUERY = "CREATE TABLE " + DATABASE_USER +
-            "("+
-            USER_ID + " INT PRIMARY KEY AUTOINCREMENT, " +
-            USER_EMAIL + " TEXT," +
+            " ("+
+            USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            USER_EMAIL  + " TEXT NOT NULL," +
             USER_NAME + " TEXT," +
-            USER_PASSWORD + " TEXT," +
-            USER_NOTE_ID + " INT REFERENCES " + DATABASE_NOTE + "(" + NOTE_ID + ")" +
+            USER_PASSWORD + " TEXT);";
 
-            ")";
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
         //Create table
         db.execSQL(CREATE_NOTE_QUERY);
+        db.execSQL(CREATE_USER_QUERY);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NOTE);
+        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_USER);
         onCreate(db);
     }
 
@@ -153,6 +153,8 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
     }
 
+
+
     //Function to update the title and/or content of specific note according to ID
     public int updateNote(Note note){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -172,4 +174,91 @@ public class NoteDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+    //Orion-Function to add User into Database
+    public long addUser (Users users){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_EMAIL, users.getUserEmail());
+        cv.put(USER_NAME, users.getUserName());
+        cv.put(USER_PASSWORD, users.getUserPassword());
+
+        long resulted = db.insert(NoteDatabase.DATABASE_USER, null, cv);
+        if(resulted == -1 ){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
+        }
+
+        return resulted;
+    }
+
+
+
+
+    //Function to get all notes in the database
+    public ArrayList<Users> getAllUser(){
+        ArrayList<Users> allUsers = new ArrayList<>();
+        String query = "SELECT * FROM " + DATABASE_USER+" ORDER BY "+USER_ID+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Users user = new Users();
+                user.setUserID(Long.parseLong(cursor.getString(0)));
+                user.setUserEmail(cursor.getString(1));
+                user.setUserName(cursor.getString(2));
+                user.setUserPassword(cursor.getString(3));
+                allUsers.add(user);
+            }while (cursor.moveToNext());
+        }
+
+        return allUsers;
+
+    }
+
+    //Function to get specific note according to ID
+    public Users getUser(long id){
+        //SELECT * FROM TABLE WHERE ID = 1
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(DATABASE_USER, new String[]{USER_ID, USER_EMAIL, USER_NAME, USER_PASSWORD},
+                USER_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
+
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
+
+        return new Users(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+
+    }
+
+    //Function to update the title and/or content of specific note according to ID
+    public int changePassword(Users user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues c = new ContentValues();
+        Log.d("Edited", "Edited Password: -> "+ user.getUserPassword() + "\n ID -> "+user.getUserID());
+        c.put(USER_EMAIL,user.getUserEmail());
+        c.put(USER_NAME,user.getUserName());
+        c.put(USER_PASSWORD,user.getUserPassword());
+        return db.update(DATABASE_USER, c,USER_ID+"=?",new String[]{String.valueOf(user.getUserID())});
+    }
+
+
+//    void addUser(String email, String username, String password) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues cv = new ContentValues();
+//
+//        cv.put(USER_EMAIL, email);
+//        cv.put(USER_NAME, username);
+//        cv.put(USER_PASSWORD, password);
+//        long result = db.insert(DATABASE_USER, null, cv);
+//        if(result == - 1){
+//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+//        }else
+//        {
+//            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }

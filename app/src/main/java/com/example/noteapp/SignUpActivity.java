@@ -21,6 +21,9 @@ public class SignUpActivity extends AppCompatActivity {
     TextView editSignUpUsername;
     TextView editSignUpPassword;
     TextView editSignUpRePassword;
+    Button signup_button;
+    NoteDatabase myDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -32,30 +35,40 @@ public class SignUpActivity extends AppCompatActivity {
         editSignUpUsername = findViewById(R.id.editSignUpUsername);
         editSignUpPassword = findViewById(R.id.editSignUpPassword);
         editSignUpRePassword = findViewById(R.id.editSignUpRePassword);
+        signup_button = findViewById(R.id.buttonSignUp);
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void signUpClick(View view){
+        //Get the title and content of edit text
         String email = editSignUpEmail.getText().toString();
         String username = editSignUpUsername.getText().toString();
         String password = editSignUpPassword.getText().toString();
         String rePassword = editSignUpRePassword.getText().toString();
+
 
         Validation validation = validateFields(email, username, password, rePassword);
         //if not valid
         if(!validation.getValid()){
             String errorMessage = String.join("\n", validation.getErrorMessageList());
             Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-        }else{
-            //check if exists in database
-            /*
-            if(exists in database){
-                Toast exists
-            }else{
-                Add to database
-            }
-            */
+        }else
+            if(password.equals(rePassword)){
+                Users users = new Users(email, username, password);
+                myDB = new NoteDatabase(SignUpActivity.this);
+                myDB.addUser(users);
+                backToMain();
+
         }
+        //Use the title and content get from edit text for the new note
+
+        }
+
+    private void backToMain() {
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        startActivity(mainActivity);
     }
 
     //Validation

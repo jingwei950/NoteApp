@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPrefManager prefManager;
     ArrayList<Note> allNotes;           //Note arraylist for storing all notes
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Select all data in database and store it in List
         allNotes = myDB.getAllNotes();
+
+        //Select all data in database and store it in a List
+
 
         //Passing the ArrayList of notes into adapter
         adapter = new Adapter(allNotes);

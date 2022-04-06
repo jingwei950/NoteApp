@@ -7,7 +7,7 @@ public class Note implements Serializable {
     private String title;
     private String content;
 
-    Note (){};
+    Note (){}
 
     public Note(long id, String title, String content){
         this.ID = id;

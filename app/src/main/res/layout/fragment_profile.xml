@@ -52,4 +52,12 @@
         android:text="Login"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/buttonSignUpPage"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Signup"
+        android:textAllCaps="false" />
+
 </LinearLayout>

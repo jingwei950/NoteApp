@@ -22,6 +22,7 @@ public class SharedPrefManager {
     public final static String FONT_SIZE = "font_size";
     public final static String LINE_HEIGHT = "line_height";
     public final static String LETTER_SPACING = "line_width";
+    public final static String USER_ID = "user_id";
 
     public final static String NIGHT_MODE_DEFAULT = "system";
     public final static String TYPEFACE_DEFAULT = "anaheim";
@@ -46,6 +47,15 @@ public class SharedPrefManager {
 
     public void set(String key, String val){
         prefEditor.putString(key, val);
+        prefEditor.apply();
+    }
+
+    public long get(String key, long defVal){
+        return pref.getLong(key, defVal);
+    }
+
+    public void set(String key, long val){
+        prefEditor.putLong(key, val);
         prefEditor.apply();
     }
 

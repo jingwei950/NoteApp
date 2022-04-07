@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.noteapp.model.SharedPrefManager;
 import com.example.noteapp.model.Validation;
 
 public class ProfileFragment extends Fragment {
@@ -31,6 +32,10 @@ public class ProfileFragment extends Fragment {
     TextView textProfileUserName;
     TextView textProfileEmail;
     TextView textProfilePassword;
+
+    SharedPrefManager prefManager;
+    Users user;
+    NoteDatabase myDB;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -63,21 +68,61 @@ public class ProfileFragment extends Fragment {
         textProfileEmail = rootView.findViewById(R.id.textProfileEmail);
         textProfilePassword = rootView.findViewById(R.id.textProfilePassword);
 
+        prefManager = new SharedPrefManager(getActivity().getApplicationContext());
+        myDB = new NoteDatabase(getActivity().getApplicationContext());
+
+        getUser();
+        displayUser();
+
         setButtonLoginClick();
         setButtonSignupClick();
-        setUsernameClick();
-        setEmailClick();
-        setPasswordClick();
+        if(prefManager.get(SharedPrefManager.USER_ID, 0) != 0){
+            setUsernameClick();
+            setEmailClick();
+            setPasswordClick();
+        }
+    }
+
+    public void getUser(){
+        long id = prefManager.get(SharedPrefManager.USER_ID, 0);
+        if(id > 0){
+            user = myDB.getUser(id);
+        }else{
+            user = new Users(0, "Username" , "Email", "Password");
+        }
+    }
+
+    public void displayUser(){
+        textProfileUserName.setText(user.getUserName());
+        textProfileEmail.setText(user.getUserEmail());
+        textProfilePassword.setText(user.getUserPassword());
+        if(prefManager.get(SharedPrefManager.USER_ID, 0) != 0){
+            textProfilePassword.setTransformationMethod(new PasswordTransformationMethod());
+        }
     }
 
     public void setButtonLoginClick(){
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //To Login Activity
+        if(prefManager.get(SharedPrefManager.USER_ID, 0) == 0){
+            buttonLogin.setText("Login");
+            buttonLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //To Login Activity
 
-            }
-        });
+                }
+            });
+        }else{
+            buttonLogin.setText("Logout");
+            buttonLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Logout
+                    prefManager.set(SharedPrefManager.USER_ID, 0);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     public void setButtonSignupClick(){
@@ -90,8 +135,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
-
 
     public void setUsernameClick(){
         textProfileUserName.setOnClickListener(new View.OnClickListener() {
@@ -114,8 +157,16 @@ public class ProfileFragment extends Fragment {
 
                         if(valid.getValid()){
                             //UPDATE DB
-                            textProfileUserName.setText(editDialogProfileUsername.getText());
-                            dialog.dismiss();
+                            user.setUserName(editDialogProfileUsername.getText().toString());
+
+                            if(myDB.checkUsernameExists(user)){
+                                Toast.makeText(getActivity().getApplicationContext(), "Username exists", Toast.LENGTH_SHORT).show();
+                                user.setUserName(textProfileUserName.getText().toString());
+                            }else{
+                                myDB.updateUser(user);
+                                textProfileUserName.setText(editDialogProfileUsername.getText());
+                                dialog.dismiss();
+                            }
                         }else{
                             String errorMessage = String.join("\n", valid.getErrorMessageList());
                             Toast.makeText(getActivity().getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
@@ -148,8 +199,16 @@ public class ProfileFragment extends Fragment {
 
                         if(valid.getValid()){
                             //UPDATE DB
-                            textProfileEmail.setText(editDialogProfileEmail.getText());
-                            dialog.dismiss();
+                            user.setUserName(editDialogProfileEmail.getText().toString());
+
+                            if(myDB.checkEmailExists(user)){
+                                Toast.makeText(getActivity().getApplicationContext(), "Email exists", Toast.LENGTH_SHORT).show();
+                                user.setUserName(textProfileEmail.getText().toString());
+                            }else{
+                                myDB.updateUser(user);
+                                textProfileEmail.setText(editDialogProfileEmail.getText());
+                                dialog.dismiss();
+                            }
                         }else{
                             String errorMessage = String.join("\n", valid.getErrorMessageList());
                             Toast.makeText(getActivity().getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
@@ -201,6 +260,9 @@ public class ProfileFragment extends Fragment {
                         Validation valid = checkPasswordValid(editDialogProfilePassword.getText().toString(), editDialogProfileRePassword.getText().toString());
                         if(valid.getValid()){
                             //UPDATE DB
+                            user.setUserPassword(editDialogProfilePassword.getText().toString());
+                            myDB.updateUser(user);
+
                             textProfilePassword.setText(editDialogProfilePassword.getText());
                             dialog.dismiss();
                         }else{

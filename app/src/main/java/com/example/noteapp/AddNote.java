@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.example.noteapp.model.SharedPrefManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,8 +38,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noteapp.model.Adapter;
 
-import com.example.noteapp.databinding.ActivityAddNoteBinding;
-
 import java.util.ArrayList;
 
 public class AddNote extends AppCompatActivity {
@@ -52,6 +51,8 @@ public class AddNote extends AppCompatActivity {
 
     SharedPrefManager prefManager;
     NoteDatabase noteDB;
+    BottomNavigationView bottomNavigationView; //BottomNavigationView
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +70,42 @@ public class AddNote extends AppCompatActivity {
         addNoteTitle = findViewById(R.id.addNoteTitle);
         addNoteContent = findViewById(R.id.addNoteContent);
 
+        //Bottom navigation bar
+        bottomNavigationView = findViewById(R.id.addNoteBottomNavigationView);
+
+        //Set the default highlighted navigation item
+        bottomNavigationView.getMenu().performIdentifierAction(R.id.AddNoteButton, 0);
+        bottomNavigationView.getMenu().getItem(0).setChecked(false);   //Set the check for "Home" button to false, to disable highlight on button
+        bottomNavigationView.getMenu().getItem(2).setChecked(false);   //Set the check for "Profile" button to false, to disable highlight on button
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);    //Set the check for "AddNote" button to true, to enable highlight on button
+
         //Floating action button for saving the notes
         saveFab = findViewById(R.id.saveFab);
 
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(saveFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
 
+        //Handle Bottom navigation button when button is clicked
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.HomeButton:
+                    //Go to MainActivity when "Home" button clicked
+                    startActivity(new Intent(this, MainActivity.class));
+                    break;
+                case R.id.AddNoteButton:
+                    //Go to AddNote Activity when "Add Note" button clicked
+                    startActivity(new Intent(this, AddNote.class));
+                    break;
+                case R.id.ProfileButton:
+                    //Go to ProfileActivity when "Profile" button clicked
+                    startActivity(new Intent(this, ProfileActivity.class));
+                    break;
+            }
+            return false;
+        });
+
         getPref();
     }
-
 
     //addNoteBtn Function - Adds data into Table
     public void btnInsertPressed(View v){
@@ -141,7 +169,7 @@ public class AddNote extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //Check the id of item clicked is the id of back arrow button on action bar
+        //Check the id of item clicked is the id of back arrow button or close button on action bar
         if(item.getItemId() == android.R.id.home){ //Action bar back button id (android.R.id.home)
             //In-built android back function
             onBackPressed(); //Make the action bar back button to go back to previous activity

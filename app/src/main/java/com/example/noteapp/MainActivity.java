@@ -27,7 +27,9 @@ import android.widget.Toast;
 
 import com.example.noteapp.model.Adapter;
 import com.example.noteapp.model.SharedPrefManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -46,16 +48,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<String> titles, contents; //For storing all the note titles
     SharedPrefManager prefManager;
     ArrayList<Note> allNotes;           //Note arraylist for storing all notes
+    MenuItem searchItem;                //MenuItem search bar
+    SearchView searchView;              //SearchView
+    BottomNavigationView bottomNavigationView; //BottomNavigationView
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //Using toolbar as actionbar
         setSupportActionBar(toolbar); //This helps to set the menu options to toolbar
+
+        //Bottom navigation bar
+        bottomNavigationView = findViewById(R.id.mainBottomNavigationView);
+
+        //Set the default highlighted navigation item
+        bottomNavigationView.getMenu().performIdentifierAction(R.id.HomeButton, 0);
+        bottomNavigationView.getMenu().getItem(1).setChecked(false);    //Set the check for "Add Note" button to false, to disable highlight on button
+        bottomNavigationView.getMenu().getItem(2).setChecked(false);    //Set the check for "Profile" button to false, to disable highlight on button
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);     //Set the check for "Home" button to true, to enable highlight on button
 
         //Layout for list of notes
         noteLists = findViewById(R.id.recyclerView);
@@ -79,9 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Select all data in database and store it in List
         allNotes = myDB.getAllNotes();
 
-        //Select all data in database and store it in a List
-
-
         //Passing the ArrayList of notes into adapter
         adapter = new Adapter(allNotes);
         //Set the layout of each note to show staggered, 2 rows vertically
@@ -89,38 +99,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Set the adapter of RecyclerView
         noteLists.setAdapter(adapter);
 
-        //Floating action button for add new note
-        FloatingActionButton addNoteFab = findViewById(R.id.addNoteFab);
-
-        //Make the save fab button to white as the design tint unable to make it white
-        DrawableCompat.setTint(addNoteFab.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
-
-        //On click listener for add note fab
-        addNoteFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Go to add note activity when addNoteFab is clicked
-                Intent addNote =  new Intent(view.getContext(), AddNote.class);
-                startActivity(addNote);
+        //Handle Bottom navigation button when button is clicked
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.HomeButton:
+                    //Go to MainActivity when "Home" button clicked
+                    startActivity(new Intent(this, MainActivity.class));
+                    break;
+                case R.id.AddNoteButton:
+                    //Go to AddNote Activity when "Add Note" button clicked
+                    startActivity(new Intent(this, AddNote.class));
+                    break;
+                case R.id.ProfileButton:
+                    //Go to ProfileActivity when "Profile" button clicked
+                    startActivity(new Intent(this, ProfileActivity.class));
+                    break;
             }
+            return false;
         });
 
         getPref();
     }
-
-//    /* TODO 3 (Display notes) - Get all the titles and contents from database*/
-//    //Function for Storing Data into Array
-//    void StoreDataArray(){
-//        Cursor cursor = myDB.readAllData();
-//        if(cursor.getCount() == 0 ){
-//            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
-//        }else{
-//            while(cursor.moveToNext()){
-//                titles.add(cursor.getString(1));
-//                contents.add(cursor.getString(2));
-//            }
-//        }
-//    }
 
     //Create options menu that contains 3 dot menu and search bar
     @Override
@@ -132,11 +131,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         inflater.inflate(R.menu.options_menu, menu);
         //Show Search bar
         inflater.inflate(R.menu.search_bar, menu);
+        //Show bottom navigation bar
+        inflater.inflate(R.menu.navigation_bar, menu);
 
         //MenuItem of search bar
-        MenuItem searchItem = menu.findItem(R.id.search_bar);
+        searchItem = menu.findItem(R.id.search_bar);
         //Search View
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
 
         //Set the query text listener when user type in the search bar
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    //Hand 3 dots menu item click
+    //Handle 3 dots menu item click
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -174,9 +175,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.select:
                 Toast.makeText(this, "You have clicked on select item", Toast.LENGTH_SHORT).show();
-
-                //For testing add "new note"
-//                addItem(titles, contents);
                 break;
 
             default:
@@ -184,21 +182,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return false;
     }
-
-    //Function for testing adding new note
-//    private void addItem(List<String> titles, List<String> contents){
-//        //Place outside of function for count++ to work
-//        int count = 4;
-//
-//        String countNotes = Integer.toString(count);
-//        titles.add("Note title " + countNotes);
-//        contents.add("Note content " + countNotes);
-//
-//        //Update the adapter so data will update on screen
-//        adapter.notifyDataSetChanged();
-//
-//        count++;
-//    }
 
     //Handle navigation item click
     @Override

@@ -73,9 +73,9 @@ public class NoteActivity extends AppCompatActivity {
         //Allow the scrolling when the content have too many words
         content.setMovementMethod(new ScrollingMovementMethod());
 
-        //Check if TextView noteActivityTitle is empty or not null
-        if(noteActivityTitle.getText().toString().equals("") || noteActivityTitle.getText() != null){
-            //Set the text to <Untitled> if it is empty or not null
+        //Check if TextView noteActivityTitle is empty and not null
+        if(noteActivityTitle.getText().toString().equals("") && noteActivityTitle.getText() != null){
+            //Set the text to <Untitled> if it is empty and not null
             noteActivityTitle.setText(getString(android.R.string.untitled));
         }
         else{ //Else when the TextView is not empty
@@ -122,7 +122,7 @@ public class NoteActivity extends AppCompatActivity {
         goToMain();
     }
 
-    //Function for going back to main page
+    //Function for going back to MainActivity
     private void goToMain(){
         Intent goMain = new Intent(this,MainActivity.class);
         startActivity(goMain); //Start MainActivity

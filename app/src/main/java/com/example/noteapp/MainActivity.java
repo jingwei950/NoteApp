@@ -11,15 +11,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -36,21 +43,24 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;          //DrawerLayout for navigation view
-    Toolbar toolbar;
+    Toolbar toolbar;                    //Tool bar
     ActionBarDrawerToggle drawerToggle; //The hamburger toggle button
     NavigationView navView;             //The navigation view that comes out when click on the toggle button
     RecyclerView noteLists;             //The view for dynamic contents on the main page, for different notes
     Adapter adapter;                    //The adapter to handle the RecyclerView, so that it can display multiple views(notes) on screen
     NoteDatabase myDB;                  //Note database
     ArrayList<String> titles, contents; //For storing all the note titles
-    SharedPrefManager prefManager;
+    SharedPrefManager prefManager;      //Shared preference manager
     ArrayList<Note> allNotes;           //Note arraylist for storing all notes
     MenuItem searchItem;                //MenuItem search bar
     SearchView searchView;              //SearchView
     BottomNavigationView bottomNavigationView; //BottomNavigationView
+    SensorManager sensorManager;        //Sensor manager
+    Sensor sensor;                      //Sensor
+    WindowManager.LayoutParams layout;  //Window manager
 
 
     @Override
@@ -60,6 +70,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //Using toolbar as actionbar
         setSupportActionBar(toolbar); //This helps to set the menu options to toolbar
+
+        //Sensor manager
+        sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        //If the light sensor is not null set the sensor listener
+        if(sensor != null){
+            Log.i("sensor", "Sensor.TYPE_LIGHT Available");
+            sensorManager.registerListener(
+                    sensorEventListenerLight,
+                    sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+        } else { // else when the sensor is null, logcat "sensor not available"
+            Log.i("sensor", "Sensor.TYPE_LIGHT NOT Available");
+        }
+
+        //Get the attributes of this window
+        layout = getWindow().getAttributes();
+
 
         //Bottom navigation bar
         bottomNavigationView = findViewById(R.id.mainBottomNavigationView);
@@ -118,8 +148,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         });
 
+
+
         getPref();
     }
+
+    //Light sensor event listener to detect brightness
+    SensorEventListener sensorEventListenerLight = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            //Lux value detected
+            float sensorLuxValue = sensorEvent.values[0];
+            //When the sensor type is light execute this
+            if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT){
+
+                Log.i("sensor", "Current screen brightness: " + layout.screenBrightness);
+
+                if(sensorLuxValue > 500){ //If the sensor detect too bright e.g under the Sun
+
+                    Log.i("sensor", "Detected brightness: " + sensorLuxValue);
+
+                    //Change the phone brightness of this current window to brighter
+                    layout.screenBrightness = 1.0F; //Set the screen brightness to 100%
+                    getWindow().setAttributes(layout);
+
+                }
+                else {  //If the sensor detect too dark e.g in a dark room
+
+                    Log.i("sensor", "Detected brightness: " + sensorLuxValue);
+
+                    //Change the phone brightness of this current window to darker
+                    layout.screenBrightness = 0.5F; //Set the screen brightness to 50%
+                    getWindow().setAttributes(layout);
+                }
+            }
+
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
 
     //Create options menu that contains 3 dot menu and search bar
     @Override
@@ -226,4 +297,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String isNightMode = prefManager.get(SharedPrefManager.NIGHT_MODE, SharedPrefManager.NIGHT_MODE_DEFAULT);
         prefManager.setDayNightMode(isNightMode);
     }
+
+//    @Override
+//    public void onSensorChanged(SensorEvent sensorEvent) {
+//        if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT){
+//            Log.i("test", "" + sensorEvent.values[0]);
+////            Log.i("sensor", "Sensor is light");
+////            if(sensorEvent.values[0] > 500){
+////                Log.i("sensor", "Amount more than 500");
+////            }
+//
+//        }
+//    }
+//
+//    @Override
+//    public void onAccuracyChanged(Sensor sensor, int i) {
+//
+//    }
 }

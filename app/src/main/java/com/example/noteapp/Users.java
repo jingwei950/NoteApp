@@ -12,7 +12,7 @@ public class Users implements Serializable {
     private String userEmail;
 
 
-    Users (){}
+
 
     public Users(long userID, String userEmail, String userName, String userPassword){
         this.userID = userID;
@@ -26,6 +26,8 @@ public class Users implements Serializable {
         this.userName = userName;
         this.userPassword = password;
     }
+
+
 
 
 

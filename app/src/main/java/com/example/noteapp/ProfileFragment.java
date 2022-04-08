@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
 
     //Get rootView
@@ -57,6 +61,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         return rootView;
+
     }
 
     //Init views, managers onclick events
@@ -117,6 +122,8 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     //To Login Activity
+                    Intent login = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
 
                 }
             });

@@ -70,21 +70,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-//    //Add data into NoteTable ORION'S CODE
-//    public void addNote (String title, String content){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(NOTE_TITLE, title);
-//        cv.put(NOTE_CONTENT, content);
-//
-//        long result = db.insert(NoteDatabase.DATABASE_NOTE, null, cv);
-//        if(result == -1 ){
-//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-//        } else{
-//            Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 
     //Function to add data into database
     public long addNote(Note note) {
@@ -120,17 +106,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
         return new Note(cursor.getLong(0), cursor.getString(1), cursor.getString(2));
     }
 
-//    //Get all notes ORION'S CODE
-//    public Cursor readAllData(){
-//        String query = "SELECT * FROM " + NoteDatabase.DATABASE_NOTE;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = null;
-//        if(db != null){
-//            cursor = db.rawQuery(query, null);
-//        }
-//        return cursor;
-//    }
+
 
     //Function to get all notes in the database
     public ArrayList<Note> getAllNotes() {
@@ -194,25 +170,25 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
 
     //Function to get all notes in the database
-    public ArrayList<Users> getAllUser() {
-        ArrayList<Users> allUsers = new ArrayList<>();
-        String query = "SELECT * FROM " + DATABASE_USER + " ORDER BY " + USER_ID + " DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Users user = new Users();
-                user.setUserID(Long.parseLong(cursor.getString(0)));
-                user.setUserEmail(cursor.getString(1));
-                user.setUserName(cursor.getString(2));
-                user.setUserPassword(cursor.getString(3));
-                allUsers.add(user);
-            } while (cursor.moveToNext());
-        }
-
-        return allUsers;
-
-    }
+//    public ArrayList<Users> getAllUser() {
+//        ArrayList<Users> allUsers = new ArrayList<>();
+//        String query = "SELECT * FROM " + DATABASE_USER + " ORDER BY " + USER_ID + " DESC";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+////                Users user = new Users();
+//                user.setUserID(Long.parseLong(cursor.getString(0)));
+//                user.setUserEmail(cursor.getString(1));
+//                user.setUserName(cursor.getString(2));
+//                user.setUserPassword(cursor.getString(3));
+//                allUsers.add(user);
+//            } while (cursor.moveToNext());
+//        }
+//
+//        return allUsers;
+//
+//    }
 
     //Function to get specific note according to ID
     public Users getUser(long id) {
@@ -279,19 +255,20 @@ public class NoteDatabase extends SQLiteOpenHelper {
     }
 
 
-//    void addUser(String email, String username, String password) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(USER_EMAIL, email);
-//        cv.put(USER_NAME, username);
-//        cv.put(USER_PASSWORD, password);
-//        long result = db.insert(DATABASE_USER, null, cv);
-//        if(result == - 1){
-//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-//        }else
-//        {
-//            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    //check username & password - orion
+
+    public Boolean checkUsernamePasswordEmail(Users user){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + DATABASE_USER + " WHERE "+ USER_NAME + "='" + user.getUserName() + "'" +
+                " AND " + USER_PASSWORD + "='" + user.getUserPassword() + "'" + " AND " + USER_EMAIL + "='" + user.getUserEmail() + "'";
+        Cursor result = db.rawQuery(query, null);
+        if(result.getCount() > 0){
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+
 }

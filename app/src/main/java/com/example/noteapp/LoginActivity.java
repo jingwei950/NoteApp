@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Defines login button
    public void logInClick(View view){
         //Get username and password
        String username = userTextName.getText().toString();

@@ -13,7 +13,7 @@ public class Users implements Serializable {
 
 
 
-
+    //Constructor
     public Users(long userID, String userEmail, String userName, String userPassword){
         this.userID = userID;
         this.userEmail = userEmail;

@@ -34,7 +34,6 @@ public class NoteActivity extends AppCompatActivity {
     private EditText content;                 //Edit text content
     private View view;                        //View for this activity
     private FloatingActionButton updateNoteBtn; //Floating action button for saving note
-    DatabaseManager dbManager;
     SharedPrefManager prefManager;
     long noteID;        //Variable for storing note ID
     String noteTitle;   //Variable for storing note title
@@ -96,14 +95,6 @@ public class NoteActivity extends AppCompatActivity {
         //Make the save fab button to white as the design tint unable to make it white
         DrawableCompat.setTint(updateNoteBtn.getDrawable(), ContextCompat.getColor(getBaseContext(), R.color.white));
 
-        // Initialize DataBaseManager
-        dbManager = new DatabaseManager( this);
-        try{
-            dbManager.open();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
         getPref();
     }

@@ -46,7 +46,6 @@ public class AddNote extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton saveFab;
     ProgressBar progressBar;
-    DatabaseManager dbManager;
     NoteDatabase myDB;
 
     SharedPrefManager prefManager;

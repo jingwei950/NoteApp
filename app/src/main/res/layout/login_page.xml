@@ -13,10 +13,14 @@
         tools:layout_editor_absoluteY="1dp">
 
         <TextView
+
+            style="@style/sectionBarStyle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/white"
+            android:background="#C5CAE9"
+            android:fontFamily="sans-serif"
             android:gravity="center_vertical"
+            android:outlineAmbientShadowColor="#757575"
             android:paddingHorizontal="15dp"
             android:text="Login Page"
             android:textColor="@color/textColor"
@@ -41,6 +45,7 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="15dp"
                     android:text="Email"
+                    android:fontFamily="sans-serif"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColor"
                     android:textStyle="bold" />
@@ -53,6 +58,7 @@
                     android:paddingHorizontal="15dp"
                     android:text="Username"
                     android:textStyle="bold"
+                    android:fontFamily="sans-serif"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColor"  />
 
@@ -64,6 +70,7 @@
                     android:paddingHorizontal="15dp"
                     android:text="Password"
                     android:textStyle="bold"
+                    android:fontFamily="sans-serif"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColor"  />
 
@@ -107,7 +114,8 @@
             android:onClick="logInClick"
             android:text="Log In"
             android:textStyle="bold"
-            android:textColor="@color/textColor" />
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </LinearLayout>

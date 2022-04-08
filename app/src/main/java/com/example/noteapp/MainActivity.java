@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SensorManager sensorManager;        //Sensor manager
     Sensor sensor;                      //Sensor
     WindowManager.LayoutParams layout;  //Window manager
+    private boolean correctBrightness = false;
+    private float currLuxVal = 0;       //Current lux value for comparing with the sensor detected lux value
 
 
     @Override
@@ -76,14 +78,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         //If the light sensor is not null set the sensor listener
-        if(sensor != null){
+        if (correctBrightness){
+            Log.i("sensor", "Unregistered sensor");
+            sensorManager.unregisterListener(sensorEventListenerLight);
+        }
+        if(sensor != null && !correctBrightness){
             Log.i("sensor", "Sensor.TYPE_LIGHT Available");
             sensorManager.registerListener(
                     sensorEventListenerLight,
                     sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
-
-        } else { // else when the sensor is null, logcat "sensor not available"
+        }
+        else { // else when the sensor is null, logcat "sensor not available"
             Log.i("sensor", "Sensor.TYPE_LIGHT NOT Available");
         }
 
@@ -159,27 +165,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onSensorChanged(SensorEvent sensorEvent) {
             //Lux value detected
             float sensorLuxValue = sensorEvent.values[0];
+
             //When the sensor type is light execute this
             if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT){
 
-                Log.i("sensor", "Current screen brightness: " + layout.screenBrightness);
+                //Sensor will keep checking and compare currLuxVal and sensorLuxValue,
+                // once the current value does not equal to sensor detected value it will trigger
+                // one of the the if else statement and set the brightness
 
-                if(sensorLuxValue > 500){ //If the sensor detect too bright e.g under the Sun
+                //Compare the current lux value with the detected lux value from sensor
+                if(currLuxVal > sensorLuxValue || currLuxVal < sensorLuxValue){
+                    //If the detected lux value is more than or less than the current lux value,
+                    //set the correctBrightness to false
+                    correctBrightness = false;
+                }
 
-                    Log.i("sensor", "Detected brightness: " + sensorLuxValue);
+                //If the sensor detect too bright e.g under the Sun
+                if(sensorLuxValue > 500 && !correctBrightness){
+                    //Set current lux value equals to sensor's detected lux value, for comparing next time
+                    currLuxVal = sensorLuxValue;
 
                     //Change the phone brightness of this current window to brighter
-                    layout.screenBrightness = 1.0F; //Set the screen brightness to 100%
-                    getWindow().setAttributes(layout);
+                    layout.screenBrightness = 1.0F;     //Set the screen brightness to 100%, for user to see under the Sun for example
+                    correctBrightness = true;           //Set the correct brightness to true
+                    getWindow().setAttributes(layout);  //Set the window attribute with the brightness
+                    Log.i("sensor", "Current screen brightness: " + layout.screenBrightness + "F, 100% brightness.");
 
                 }
-                else {  //If the sensor detect too dark e.g in a dark room
-
-                    Log.i("sensor", "Detected brightness: " + sensorLuxValue);
+                else if (sensorLuxValue < 500 && !correctBrightness){  //If the sensor detect too dark e.g in a dark room
+                    //Set current lux value equals to sensor's detected lux value, for comparing next time
+                    currLuxVal = sensorLuxValue;
 
                     //Change the phone brightness of this current window to darker
-                    layout.screenBrightness = 0.5F; //Set the screen brightness to 50%
-                    getWindow().setAttributes(layout);
+                    layout.screenBrightness = 0.2F;     //Set the screen brightness to 20%, for user to see the screen with a dimmer brightness to prevent blinding of eyes
+                    correctBrightness = true;           //Set the correct brightness to true
+                    getWindow().setAttributes(layout);  //Set the window attribute with the brightness
+                    Log.i("sensor", "Current screen brightness: " + layout.screenBrightness + "F, 20% brightness.");
+                }
+                else if (sensorLuxValue == 500 && !correctBrightness){ //If the sensor detect the lux value is 500 which is just right
+                    //Set current lux value equals to sensor's detected lux value, for comparing next time
+                    currLuxVal = sensorLuxValue;
+
+                    //Change the phone brightness of this current window to darker
+                    layout.screenBrightness = 0.5F;     //Set the screen brightness to 50%, for balance usage
+                    correctBrightness = true;           //Set the correct brightness to true
+                    getWindow().setAttributes(layout);  //Set the window attribute with the brightness
+                    Log.i("sensor", "Current screen brightness: " + layout.screenBrightness + "F, 50% brightness.");
                 }
             }
 
@@ -297,21 +328,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String isNightMode = prefManager.get(SharedPrefManager.NIGHT_MODE, SharedPrefManager.NIGHT_MODE_DEFAULT);
         prefManager.setDayNightMode(isNightMode);
     }
-
-//    @Override
-//    public void onSensorChanged(SensorEvent sensorEvent) {
-//        if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT){
-//            Log.i("test", "" + sensorEvent.values[0]);
-////            Log.i("sensor", "Sensor is light");
-////            if(sensorEvent.values[0] > 500){
-////                Log.i("sensor", "Amount more than 500");
-////            }
-//
-//        }
-//    }
-//
-//    @Override
-//    public void onAccuracyChanged(Sensor sensor, int i) {
-//
-//    }
 }

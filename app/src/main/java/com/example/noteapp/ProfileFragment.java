@@ -51,6 +51,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    //Get rootView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,16 +59,19 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+    //Init views, managers onclick events
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Initialize all views
         buttonLogin = rootView.findViewById(R.id.buttonLogin);
         buttonSignup = rootView.findViewById(R.id.buttonSignUpPage);
         textProfileUserName = rootView.findViewById(R.id.textProfileUsername);
         textProfileEmail = rootView.findViewById(R.id.textProfileEmail);
         textProfilePassword = rootView.findViewById(R.id.textProfilePassword);
 
+        //New SharedPref and Database managers
         prefManager = new SharedPrefManager(getActivity().getApplicationContext());
         myDB = new NoteDatabase(getActivity().getApplicationContext());
 
@@ -76,6 +80,8 @@ public class ProfileFragment extends Fragment {
 
         setButtonLoginClick();
         setButtonSignupClick();
+
+        //Check login status -set onclick event accordingly
         if(prefManager.get(SharedPrefManager.USER_ID, 0) != 0){
             setUsernameClick();
             setEmailClick();
@@ -83,6 +89,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    //Get current user from SharedPref and Database
     public void getUser(){
         long id = prefManager.get(SharedPrefManager.USER_ID, 0);
         if(id > 0){
@@ -92,6 +99,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    //Display the information of current user
     public void displayUser(){
         textProfileUserName.setText(user.getUserName());
         textProfileEmail.setText(user.getUserEmail());
@@ -101,6 +109,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    //Defines the login Button onclick event -function changes depending on login status
     public void setButtonLoginClick(){
         if(prefManager.get(SharedPrefManager.USER_ID, 0) == 0){
             buttonLogin.setText("Login");
@@ -125,6 +134,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    //Defines the sign up button onclick event
     public void setButtonSignupClick(){
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +146,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    //Defines the username onclick event
     public void setUsernameClick(){
         textProfileUserName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +158,7 @@ public class ProfileFragment extends Fragment {
                 TextView editDialogProfileUsername = dialog.findViewById(R.id.editDialogProfileUsername);
                 editDialogProfileUsername.setText(textProfileUserName.getText());
 
+                //Define the confirm button onclick event to validate and update database
                 ImageButton imageButtonUsernameConfirm = dialog.findViewById(R.id.imageButtonUsernameConfirm);
                 imageButtonUsernameConfirm.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -179,6 +191,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    //Defines the email onclick event
     public void setEmailClick(){
         textProfileEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +203,7 @@ public class ProfileFragment extends Fragment {
                 TextView editDialogProfileEmail = dialog.findViewById(R.id.editDialogProfileEmail);
                 editDialogProfileEmail.setText(textProfileEmail.getText());
 
+                //Define the confirm button onclick event to validate and update database
                 ImageButton imageButtonEmailConfirm = dialog.findViewById(R.id.imageButtonEmailConfirm);
                 imageButtonEmailConfirm.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -221,6 +235,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    //Defines the password onclick event
     public void setPasswordClick(){
         textProfilePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,6 +251,7 @@ public class ProfileFragment extends Fragment {
                 editDialogProfilePassword.setTransformationMethod(new PasswordTransformationMethod());
                 editDialogProfileRePassword.setTransformationMethod(new PasswordTransformationMethod());
 
+                //Define the show/hide buttons onclick event to show and hide password
                 ImageButton imageButtonShowHidePassword = dialog.findViewById(R.id.imageButtonShowHidePassword);
                 imageButtonShowHidePassword.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -252,6 +268,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
+                //Define the confirm button onclick event to validate and update database
                 ImageButton imageButtonPasswordConfirm = dialog.findViewById(R.id.imageButtonPasswordConfirm);
                 imageButtonPasswordConfirm.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -277,6 +294,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    //To show and hide passwords
     public void showHide(TextView textView){
         if(textView.getTransformationMethod() instanceof PasswordTransformationMethod){
             textView.setTransformationMethod(null);
@@ -285,6 +303,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    //Check validity of username
     public Validation checkUsernameValid(String username){
         Validation valid = new Validation();
         valid.setValid(true);
@@ -301,6 +320,7 @@ public class ProfileFragment extends Fragment {
         return valid;
     }
 
+    //Check validity of email
     public Validation checkEmailValid(String email){
         Validation valid = new Validation();
         valid.setValid(true);
@@ -323,6 +343,7 @@ public class ProfileFragment extends Fragment {
         return valid;
     }
 
+    //Check validity of password
     public Validation checkPasswordValid(String password, String rePassword){
         Validation valid = new Validation();
         valid.setValid(true);

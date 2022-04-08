@@ -221,11 +221,12 @@ public class NoteDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.query(DATABASE_USER, new String[]{USER_ID, USER_EMAIL, USER_NAME, USER_PASSWORD},
                 USER_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor.getCount()>0) {
             cursor.moveToFirst();
+            return new Users(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+        }else{
+            return new Users("Email", "Username", "Password");
         }
-
-        return new Users(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
     }
 
     //Overload to get id --cy

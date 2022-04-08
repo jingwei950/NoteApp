@@ -121,5 +121,12 @@
             android:onClick="signUpClick"
             android:text="Sign Up" />
 
+        <TextView
+            android:id="@+id/textError"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

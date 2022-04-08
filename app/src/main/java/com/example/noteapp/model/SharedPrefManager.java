@@ -30,35 +30,41 @@ public class SharedPrefManager {
     public final static String LINE_HEIGHT_DEFAULT = "1.0";
     public final static String LETTER_SPACING_DEFAULT = "0.0";
 
-    public final static float FONT_SIZE_SMALL = 20.0f;
-    public final static float FONT_SIZE_MEDIUM = 30.0f;
-    public final static float FONT_SIZE_LARGE = 40.0f;
+    public final static float FONT_SIZE_SMALL = 15.0f;
+    public final static float FONT_SIZE_MEDIUM = 20.0f;
+    public final static float FONT_SIZE_LARGE = 30.0f;
 
 
+    //Constructor
     public SharedPrefManager(Context context){
         this.context = context;
         pref = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         prefEditor = pref.edit();
     }
 
+    //Get String SharedPref
     public String get(String key, String defVal){
         return pref.getString(key, defVal);
     }
 
+    //Set String SharedPref
     public void set(String key, String val){
         prefEditor.putString(key, val);
         prefEditor.apply();
     }
 
+    //Get long SharedPref (overload)
     public long get(String key, long defVal){
         return pref.getLong(key, defVal);
     }
 
+    //Set long SharedPref (overload)
     public void set(String key, long val){
         prefEditor.putLong(key, val);
         prefEditor.apply();
     }
 
+    //Sets theme for day/night
     public boolean setDayNightMode(String isNightMode){
         switch(isNightMode) {
             case "day":
@@ -74,12 +80,13 @@ public class SharedPrefManager {
                 set(NIGHT_MODE, "system");
                 return true;
             default:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                set(NIGHT_MODE, "day");
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                set(NIGHT_MODE, "system");
                 return false;
         }
     }
 
+    //Sets typeface for notes
     public void setTypeface(TextView textView, String typeface){
         switch(typeface){
             case "anaheim":
@@ -99,6 +106,7 @@ public class SharedPrefManager {
         }
     }
 
+    //Sets font size for notes
     public void setFontSize(TextView textView, String fontSize){
         switch(fontSize){
             case "small":
@@ -115,11 +123,13 @@ public class SharedPrefManager {
         }
     }
 
+    //Sets line height for notes
     public void setLineHeight(TextView textView, String lineHeight){
         float lineHeight_float = Float.parseFloat(lineHeight);
         textView.setLineSpacing(0, lineHeight_float);
     }
 
+    //sets letter spacing for notes
     public void setLetterSpacing(TextView textView, String letterSpacing){
         float letterSpacing_float = Float.parseFloat(letterSpacing);
         textView.setLetterSpacing(letterSpacing_float);

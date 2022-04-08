@@ -32,12 +32,14 @@ public class ThemeFragment extends Fragment {
         return fragment;
     }
 
+    //Init SharedPrefManager
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefManager = new SharedPrefManager(getActivity().getApplicationContext());
     }
 
+    //Get rootView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ThemeFragment extends Fragment {
         return rootView;
     }
 
+    //Init views, onclick events
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -55,11 +58,13 @@ public class ThemeFragment extends Fragment {
         setDayNightLayoutClick();
     }
 
+    //Retrieve night_mode from SharedPref
     public void getPref(){
-        String dayNight = prefManager.get(SharedPrefManager.NIGHT_MODE, "day");
-        setDayNightText(dayNight);
+        String dayNight = prefManager.get(SharedPrefManager.NIGHT_MODE, SharedPrefManager.NIGHT_MODE_DEFAULT);
+        textCurrentDayNight.setText(dayNight);
     }
 
+    //Define the day night onclick event
     public void setDayNightLayoutClick(){
         LinearLayout dayNightLayout = rootView.findViewById(R.id.dayNightLayout);
         dayNightLayout.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +76,7 @@ public class ThemeFragment extends Fragment {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         String dayNight = menuItem.getTitleCondensed().toString();
                         if(prefManager.setDayNightMode(dayNight)){
-                            setDayNightText(dayNight);
+                            textCurrentDayNight.setText(dayNight);
                             return true;
                         }else{
                             return false;
@@ -83,24 +88,4 @@ public class ThemeFragment extends Fragment {
             }
         });
     }
-
-    public void setDayNightText(String dayNight){
-        prefManager.set(SharedPrefManager.NIGHT_MODE, dayNight);
-
-        switch(dayNight){
-            case "day":
-                textCurrentDayNight.setText("Day");
-                break;
-            case "night":
-                textCurrentDayNight.setText("Night");
-                break;
-            case "system":
-                textCurrentDayNight.setText("System");
-                break;
-            default:
-                textCurrentDayNight.setText("System");
-                break;
-        }
-    }
-
 }

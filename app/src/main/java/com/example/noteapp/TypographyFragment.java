@@ -39,18 +39,19 @@ public class TypographyFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static TypographyFragment newInstance(String param1, String param2) {
+    public static TypographyFragment newInstance() {
         TypographyFragment fragment = new TypographyFragment();
         return fragment;
     }
 
+    //Init SharedPrefManager
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefManager = new SharedPrefManager(getActivity().getApplicationContext());
     }
 
+    //Get rootView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class TypographyFragment extends Fragment {
         return rootView;
     }
 
+    //Init views, onclick events
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,22 +76,24 @@ public class TypographyFragment extends Fragment {
         setLetterSpacingClick();
     }
 
+    //Retrieve the typography from SharedPref
     public void getPref(){
         String typeface = prefManager.get(SharedPrefManager.TYPEFACE, SharedPrefManager.TYPEFACE_DEFAULT);
-        setTypeface(typeface);
+        textCurrentTypeface.setText(typeface);
+        prefManager.setTypeface(textCurrentTypeface, typeface);
 
         String fontSize = prefManager.get(SharedPrefManager.FONT_SIZE, SharedPrefManager.FONT_SIZE_DEFAULT);
-        setFontSize(fontSize);
+        textCurrentFontSize.setText(fontSize);
+        prefManager.setFontSize(textCurrentFontSize, fontSize);
 
         String lineHeight = prefManager.get(SharedPrefManager.LINE_HEIGHT, SharedPrefManager.LINE_HEIGHT_DEFAULT);
-        setLineHeight(lineHeight);
+        textCurrentLineHeight.setText(lineHeight);
 
         String letterSpacing = prefManager.get(SharedPrefManager.LETTER_SPACING, SharedPrefManager.LETTER_SPACING_DEFAULT);
-        setLetterSpacing(letterSpacing);
+        textCurrentLetterSpacing.setText(letterSpacing);
     }
 
-
-    //BUTTON CLICKS
+    //Define the typeface onclick event
     public void setTypefaceClick(){
         LinearLayout typefaceLayout = rootView.findViewById(R.id.typefaceLayout);
         typefaceLayout.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +103,12 @@ public class TypographyFragment extends Fragment {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        return setTypeface(menuItem.getTitleCondensed().toString());
+                        String typeface = menuItem.getTitleCondensed().toString();
+                        prefManager.set(SharedPrefManager.TYPEFACE, typeface);
+                        prefManager.setTypeface(textCurrentTypeface, typeface);
+                        textCurrentTypeface.setText(typeface);
+
+                        return true;
                     }
                 });
                 popupMenu.inflate(R.menu.typeface_menu);
@@ -108,6 +117,7 @@ public class TypographyFragment extends Fragment {
         });
     }
 
+    //Define the font size onclick event
     public void setFontSizeClick(){
         LinearLayout fontSizeLayout = rootView.findViewById(R.id.fontSizeLayout);
         fontSizeLayout.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +127,12 @@ public class TypographyFragment extends Fragment {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        return setFontSize(menuItem.getTitleCondensed().toString());
+                        String fontSize = menuItem.getTitleCondensed().toString();
+                        prefManager.set(SharedPrefManager.FONT_SIZE, fontSize);
+                        prefManager.setFontSize(textCurrentFontSize, fontSize);
+                        textCurrentFontSize.setText(fontSize);
+
+                        return true;
                     }
                 });
                 popupMenu.inflate(R.menu.font_size_menu);
@@ -126,6 +141,7 @@ public class TypographyFragment extends Fragment {
         });
     }
 
+    //Define the line height onclick event
     public void setLineHeightClick(){
         LinearLayout lineHeightLayout = rootView.findViewById(R.id.lineHeightLayout);
         lineHeightLayout.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +185,9 @@ public class TypographyFragment extends Fragment {
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        setLineHeight(textDialogLineHeight.getText().toString());
+                        String lineHeight = textDialogLineHeight.getText().toString();
+                        textCurrentLineHeight.setText(lineHeight);
+                        prefManager.set(SharedPrefManager.LINE_HEIGHT, lineHeight);
                     }
                 });
 
@@ -178,6 +196,7 @@ public class TypographyFragment extends Fragment {
         });
     }
 
+    //Define the letter spacing onclick event
     public void setLetterSpacingClick(){
         LinearLayout letterSpacingLayout = rootView.findViewById(R.id.letterSpacingLayout);
         letterSpacingLayout.setOnClickListener(new View.OnClickListener() {
@@ -221,77 +240,14 @@ public class TypographyFragment extends Fragment {
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                        setLetterSpacing(textDialogLetterSpacing.getText().toString());
+                        String letterSpacing = textDialogLetterSpacing.getText().toString();
+                        textCurrentLetterSpacing.setText(letterSpacing);
+                        prefManager.set(SharedPrefManager.LETTER_SPACING, letterSpacing);
                     }
                 });
 
                 dialog.show();
             }
         });
-    }
-
-
-    //SETTERS
-    public boolean setTypeface(String typeface) {
-        prefManager.set(SharedPrefManager.TYPEFACE, typeface);
-        switch (typeface) {
-            case "anaheim":
-                textCurrentTypeface.setText("Anaheim");
-                textCurrentTypeface.setTypeface(ResourcesCompat.getFont(getActivity().getApplicationContext(), R.font.anaheim));
-                return true;
-
-            case "euphoriaScript":
-                textCurrentTypeface.setText("Euphoria Script");
-                textCurrentTypeface.setTypeface(ResourcesCompat.getFont(getActivity().getApplicationContext(), R.font.euphoria_script));
-                return true;
-
-            case "lancelot":
-                textCurrentTypeface.setText("Lancelot");
-                textCurrentTypeface.setTypeface(ResourcesCompat.getFont(getActivity().getApplicationContext(), R.font.lancelot));
-                return true;
-
-            case "monospace":
-                textCurrentTypeface.setText("Monospace");
-                textCurrentTypeface.setTypeface(Typeface.MONOSPACE);
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-    public boolean setFontSize(String fontSize){
-        prefManager.set(SharedPrefManager.FONT_SIZE, fontSize);
-        switch(fontSize){
-            case "small":
-                textCurrentFontSize.setText("Small");
-                textCurrentFontSize.setTextSize(10.0f);
-                return true;
-
-            case "medium":
-                textCurrentFontSize.setText("Medium");
-                textCurrentFontSize.setTextSize(15.0f);
-
-                return true;
-
-            case "large":
-                textCurrentFontSize.setText("Large");
-                textCurrentFontSize.setTextSize(20.0f);
-
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-    public void setLineHeight(String lineHeight){
-        textCurrentLineHeight.setText(lineHeight);
-        prefManager.set(SharedPrefManager.LINE_HEIGHT, lineHeight);
-    }
-
-    public void setLetterSpacing(String letterSpacing){
-        textCurrentLetterSpacing.setText(letterSpacing);
-        prefManager.set(SharedPrefManager.LETTER_SPACING, letterSpacing);
     }
 }

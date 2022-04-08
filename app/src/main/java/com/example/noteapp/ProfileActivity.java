@@ -32,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     Toolbar toolbar;
     BottomNavigationView bottomNavigationView; //BottomNavigationView
 
+    //Initialize
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Display back arrow button at top left
 
+        //Fragments to initialize
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.profileFragmentContainer, ProfileFragment.class, null)

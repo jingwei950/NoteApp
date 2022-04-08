@@ -20,6 +20,7 @@ import com.example.noteapp.model.Validation;
 public class SignUpActivity extends AppCompatActivity {
     SharedPrefManager prefManager;
 
+    TextView textError;
     TextView editSignUpEmail;
     TextView editSignUpUsername;
     TextView editSignUpPassword;
@@ -28,21 +29,26 @@ public class SignUpActivity extends AppCompatActivity {
     NoteDatabase myDB;
     Users user;
 
+    //Initialize
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_layout);
 
+        //New SharedPref and Database managers
         prefManager = new SharedPrefManager(getApplicationContext());
         myDB = new NoteDatabase(getApplicationContext());
 
+        //Initialize all views
         editSignUpEmail = findViewById(R.id.editSignUpEmail);
         editSignUpUsername = findViewById(R.id.editSignUpUsername);
         editSignUpPassword = findViewById(R.id.editSignUpPassword);
         editSignUpRePassword = findViewById(R.id.editSignUpRePassword);
         signup_button = findViewById(R.id.buttonSignUp);
+        textError = findViewById(R.id.textError);
     }
 
+    //Defines the sign up onclick event
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void signUpClick(View view){
         //Get the title and content of edit text
@@ -56,24 +62,27 @@ public class SignUpActivity extends AppCompatActivity {
         //if not valid
         if(!validation.getValid()){
             String errorMessage = String.join("\n", validation.getErrorMessageList());
+            textError.setText(errorMessage);
             Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
         }else{
             //check exists
             if(myDB.checkEmailExists(user)){
-                Toast.makeText(getApplicationContext(), "Email Already Exists", Toast.LENGTH_SHORT).show();
+                textError.setText(R.string.email_taken);
+                Toast.makeText(getApplicationContext(), R.string.email_taken, Toast.LENGTH_SHORT).show();
             }else if(myDB.checkUsernameExists(user)){
-                Toast.makeText(getApplicationContext(), "Username Already Exists", Toast.LENGTH_SHORT).show();
+                textError.setText(R.string.username_taken);
+                Toast.makeText(getApplicationContext(), R.string.username_taken, Toast.LENGTH_SHORT).show();
             }else{
                 myDB.addUser(user);
+                user = myDB.getUser(editSignUpEmail.getText().toString());
+                prefManager.set(SharedPrefManager.USER_ID, user.getUserID());
                 backToProfile();
             }
         }
     }
 
+    //Go to ProfileActivity
     private void backToProfile() {
-        user = myDB.getUser(editSignUpEmail.getText().toString());
-        prefManager.set(SharedPrefManager.USER_ID, user.getUserID());
-
         Intent profileActivity = new Intent(this, ProfileActivity.class);
         startActivity(profileActivity);
     }
@@ -85,16 +94,16 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (email.isEmpty() || username.isEmpty() || password.isEmpty() || rePassword.isEmpty()) {
             validation.setValid(false);
-            validation.addErrorMessage("Empty Fields");
+            validation.addErrorMessage(getString(R.string.empty_fields));
         } else {
             if (!email.contains("@")) {
                 validation.setValid(false);
-                validation.addErrorMessage("Invalid Email");
+                validation.addErrorMessage(getString(R.string.invalid_email));
             }
             if (!password.equals(rePassword)) {
 
                 validation.setValid(false);
-                validation.addErrorMessage("Password are not the same");
+                validation.addErrorMessage(getString(R.string.password_not_same));
             }
         }
         return validation;

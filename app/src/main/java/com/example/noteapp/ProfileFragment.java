@@ -217,11 +217,11 @@ public class ProfileFragment extends Fragment {
 
                         if(valid.getValid()){
                             //UPDATE DB
-                            user.setUserName(editDialogProfileEmail.getText().toString());
+                            user.setUserEmail(editDialogProfileEmail.getText().toString());
 
                             if(myDB.checkEmailExists(user)){
                                 Toast.makeText(getActivity().getApplicationContext(), "Email exists", Toast.LENGTH_SHORT).show();
-                                user.setUserName(textProfileEmail.getText().toString());
+                                user.setUserEmail(textProfileEmail.getText().toString());
                             }else{
                                 myDB.updateUser(user);
                                 textProfileEmail.setText(editDialogProfileEmail.getText());
@@ -316,11 +316,6 @@ public class ProfileFragment extends Fragment {
             valid.setValid(false);
             valid.addErrorMessage("Empty Field");
         }
-        //if exists in database
-        if(false){
-            valid.setValid(false);
-            valid.addErrorMessage("Username already exists");
-        }
         return valid;
     }
 
@@ -339,11 +334,6 @@ public class ProfileFragment extends Fragment {
             valid.addErrorMessage("Incorrect Format");
         }
 
-        //if exists in database
-        if(false){
-            valid.setValid(false);
-            valid.addErrorMessage("Email already exists");
-        }
         return valid;
     }
 

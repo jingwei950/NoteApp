@@ -294,4 +294,20 @@ public class NoteDatabase extends SQLiteOpenHelper {
         }
     }
 
+    //FOR TESTING
+    public Note getNoteTest(String title, String content, long userID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM "+ DATABASE_NOTE +" WHERE "+
+                NOTE_TITLE +"='"+ title +"' AND "+
+                NOTE_CONTENT +"='" +content+ "' AND "+
+                NOTE_USER_ID +"='" +userID+ "';";
+        Cursor result = db.rawQuery(query, null);
+        if(result.getCount()>0){
+            result.moveToFirst();
+            return new Note(result.getLong(0), result.getString(1), result.getString(2), result.getLong(3));
+        }else{
+            return new Note(0, "Title Not Added", "Content Not Added", 0);
+        }
+    }
+
 }

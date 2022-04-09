@@ -5,17 +5,9 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.hamcrest.CoreMatchers.not;
-
-import android.util.Log;
-import android.view.View;
-
-import androidx.annotation.ContentView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.Intents;
@@ -32,18 +24,22 @@ public class SignUpActivityTest extends TestCase {
 
     @Rule
     public ActivityScenarioRule<SignUpActivity> activityScenarioRule = new ActivityScenarioRule<>(SignUpActivity.class);
+    public ActivityScenario activityScenario;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        ActivityScenario activityScenario = ActivityScenario.launch(SignUpActivity.class);
+        //Start simulating activity
+        activityScenario = ActivityScenario.launch(SignUpActivity.class);
         Intents.init();
     }
 
     //Field Validity Tests
     @Test
     public void testEmptyFields(){
+        //Click
         Espresso.onView(withId(R.id.buttonSignUp)).perform(click());
+        //Check
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.empty_fields)));
     }
 
@@ -54,6 +50,7 @@ public class SignUpActivityTest extends TestCase {
         String password = "123";
         String rePassword = "123";
 
+        //Simulate
         writeAndClick(email, username, password, rePassword);
         //Check
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.email_taken)));
@@ -66,6 +63,7 @@ public class SignUpActivityTest extends TestCase {
         String password = "123";
         String rePassword = "123";
 
+        //Simulate
         writeAndClick(email, username, password, rePassword);
         //Check
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.invalid_email)));
@@ -78,6 +76,7 @@ public class SignUpActivityTest extends TestCase {
         String password = "123";
         String rePassword = "123";
 
+        //Simulate
         writeAndClick(email, username, password, rePassword);
         //Check
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.username_taken)));
@@ -90,8 +89,10 @@ public class SignUpActivityTest extends TestCase {
         String password = "123";
         String rePassword = "987";
 
+        //Simulate
         writeAndClick(email, username, password, rePassword);
 
+        //Check
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.password_not_same)));
     }
 
@@ -102,7 +103,9 @@ public class SignUpActivityTest extends TestCase {
         String password = "123";
         String rePassword = "123";
 
+        //Simulate
         writeAndClick(email, username, password, rePassword);
+        //Check
         intended(hasComponent(ProfileActivity.class.getName()));
     }
 

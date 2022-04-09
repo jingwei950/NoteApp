@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noteapp.model.SharedPrefManager;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText userTextEmail;
     Button login;
     Users user;
+    TextView errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         userTextPass = findViewById(R.id.userTextPass);
         userTextEmail = findViewById(R.id.userTextEmail);
         login = findViewById(R.id.loginButton);
-
-
+        errorMessage =findViewById(R.id.errorMessageLogin);
     }
 
     //Defines login button
@@ -46,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
        String email = userTextEmail.getText().toString();
        user = new Users(email, username, password);
        if(username.equals("") || password.equals("") || email.equals("")){
-           Toast.makeText(this, "Fill in empty space", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, R.string.empty_fields, Toast.LENGTH_SHORT).show();
+           errorMessage.setText(R.string.empty_fields);
        }
        else{
            boolean checkUserPass = myDB.checkUsernamePasswordEmail(user);
@@ -56,7 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                backToProfile();
            }
            else{
-               Toast.makeText(this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, R.string.invalid_credentials, Toast.LENGTH_SHORT).show();
+               errorMessage.setText(R.string.invalid_credentials);
            }
        }
    }

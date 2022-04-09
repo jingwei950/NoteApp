@@ -103,11 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Bottom navigation bar
         bottomNavigationView = findViewById(R.id.mainBottomNavigationView);
 
-        //Set the default highlighted navigation item
-        bottomNavigationView.getMenu().performIdentifierAction(R.id.HomeButton, 0);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);    //Set the check for "Add Note" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(2).setChecked(false);    //Set the check for "Profile" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);     //Set the check for "Home" button to true, to enable highlight on button
+        //Set the default highlighted navigation item ("Home" for this page)
+        bottomNavigationView.setSelectedItemId(R.id.HomeButton);
 
         //Layout for list of notes
         noteLists = findViewById(R.id.recyclerView);
@@ -129,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myDB = new NoteDatabase(MainActivity.this);
 
         //Select all data in database and store it in List
-        //allNotes = myDB.getAllNotes();
+//        allNotes = myDB.getAllNotes();
         allNotes = myDB.getAllNotes(prefManager.get(SharedPrefManager.USER_ID, SharedPrefManager.USER_ID_DEFAULT));
 
         //Passing the ArrayList of notes into adapter

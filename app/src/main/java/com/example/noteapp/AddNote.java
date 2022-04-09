@@ -72,11 +72,8 @@ public class AddNote extends AppCompatActivity {
         //Bottom navigation bar
         bottomNavigationView = findViewById(R.id.addNoteBottomNavigationView);
 
-        //Set the default highlighted navigation item
-        bottomNavigationView.getMenu().performIdentifierAction(R.id.AddNoteButton, 0);
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);   //Set the check for "Home" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(2).setChecked(true);   //Set the check for "Profile" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(1).setChecked(false);    //Set the check for "AddNote" button to true, to enable highlight on button
+        //Set the default highlighted navigation item ("Add Note" for this page)
+        bottomNavigationView.setSelectedItemId(R.id.AddNoteButton);
 
         //Floating action button for saving the notes
         saveFab = findViewById(R.id.saveFab);

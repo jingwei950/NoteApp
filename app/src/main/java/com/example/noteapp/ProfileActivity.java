@@ -41,11 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
         //Bottom navigation bar
         bottomNavigationView = findViewById(R.id.profileBottomNavigationView);
 
-        //Set the default highlighted navigation item
-        bottomNavigationView.getMenu().performIdentifierAction(R.id.ProfileButton, 0);
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);    //Set the check for "Home" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(1).setChecked(false);    //Set the check for "AddNote" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(2).setChecked(true);     //Set the check for "Profile" button to true , to enable highlight on button
+        //Set the default highlighted navigation item ("Profile" for this page)
+        bottomNavigationView.setSelectedItemId(R.id.ProfileButton);
 
         //Assign the toolbar to variable
         toolbar = findViewById(R.id.toolbar);

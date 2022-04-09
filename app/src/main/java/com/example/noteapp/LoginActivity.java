@@ -45,12 +45,12 @@ public class LoginActivity extends AppCompatActivity {
        String password = userTextPass.getText().toString();
        String email = userTextEmail.getText().toString();
        user = new Users(email, username, password);
-       if(username.equals("") || password.equals("")){
+       if(username.equals("") || password.equals("") || email.equals("")){
            Toast.makeText(this, "Fill in empty space", Toast.LENGTH_SHORT).show();
        }
        else{
-           Boolean checkuserpass = myDB.checkUsernamePasswordEmail(user);
-           if(checkuserpass==true){
+           boolean checkUserPass = myDB.checkUsernamePasswordEmail(user);
+           if(checkUserPass==true){
                user = myDB.getUser(userTextEmail.getText().toString());
                prefManager.set(SharedPrefManager.USER_ID, user.getUserID());
                backToProfile();

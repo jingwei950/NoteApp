@@ -72,6 +72,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         long noteID = notes.get(holder.getAdapterPosition()).getID();
         String noteTitle = notes.get(holder.getAdapterPosition()).getTitle();
         String noteContent = notes.get(holder.getAdapterPosition()).getContent();
+        long noteUserID = notes.get(holder.getAdapterPosition()).getUserID();
 
         //Set the holder with click listener
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +83,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                 noteIntent.putExtra("id", noteID);          //Pass the ID to the new activity
                 noteIntent.putExtra("title", noteTitle);    //Pass the title to the new activity
                 noteIntent.putExtra("content", noteContent);//Pass the content to the new activity
+                noteIntent.putExtra("userId", noteUserID);
                 noteIntent.putExtra("color", color);        //Pass the color to the new activity
                 view.getContext().startActivity(noteIntent);      //Start the note activity
             }
@@ -100,6 +102,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                         goNoteActivity.putExtra("id", noteID);
                         goNoteActivity.putExtra("title", noteTitle);
                         goNoteActivity.putExtra("content", noteContent);
+                        goNoteActivity.putExtra("userId", noteUserID);
                         goNoteActivity.putExtra("color", color);
                         view.getContext().startActivity(goNoteActivity);
                         return false;
@@ -108,7 +111,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                 menu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        Note note = new Note(noteID, noteTitle, noteContent);
+                        Note note = new Note(noteID, noteTitle, noteContent, noteUserID); //--> not used?
                         NoteDatabase db = new NoteDatabase(view.getContext());
                         db.deleteNote(noteID);
                         notes.remove(holder.getAdapterPosition()); //Delete from List

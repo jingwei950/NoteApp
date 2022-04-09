@@ -29,6 +29,7 @@ public class SharedPrefManager {
     public final static String FONT_SIZE_DEFAULT = "medium";
     public final static String LINE_HEIGHT_DEFAULT = "1.0";
     public final static String LETTER_SPACING_DEFAULT = "0.0";
+    public final static long USER_ID_DEFAULT = 0;
 
     public final static float FONT_SIZE_SMALL = 15.0f;
     public final static float FONT_SIZE_MEDIUM = 20.0f;

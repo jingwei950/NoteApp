@@ -75,8 +75,8 @@ public class AddNote extends AppCompatActivity {
         //Set the default highlighted navigation item
         bottomNavigationView.getMenu().performIdentifierAction(R.id.AddNoteButton, 0);
         bottomNavigationView.getMenu().getItem(0).setChecked(false);   //Set the check for "Home" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(2).setChecked(false);   //Set the check for "Profile" button to false, to disable highlight on button
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);    //Set the check for "AddNote" button to true, to enable highlight on button
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);   //Set the check for "Profile" button to false, to disable highlight on button
+        bottomNavigationView.getMenu().getItem(1).setChecked(false);    //Set the check for "AddNote" button to true, to enable highlight on button
 
         //Floating action button for saving the notes
         saveFab = findViewById(R.id.saveFab);
@@ -111,9 +111,10 @@ public class AddNote extends AppCompatActivity {
         //Get the title and content of edit text
         String title = addNoteTitle.getText().toString();
         String content = addNoteContent.getText().toString();
+        long userID = prefManager.get(SharedPrefManager.USER_ID, SharedPrefManager.USER_ID_DEFAULT);
 
         //Use the title and content get from edit text for the new note
-        Note note = new Note(title, content);
+        Note note = new Note(title, content, userID);
 
         //Check if both title and content is empty, if it is note will not be save
         if(title.isEmpty() && content.isEmpty()){

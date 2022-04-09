@@ -38,6 +38,7 @@ public class NoteActivity extends AppCompatActivity {
     long noteID;        //Variable for storing note ID
     String noteTitle;   //Variable for storing note title
     String noteContent; //Variable for storing note content
+    long noteUserID;
     NoteDatabase db;    //Note database
 
     @Override
@@ -57,6 +58,7 @@ public class NoteActivity extends AppCompatActivity {
         noteID = data.getLongExtra("id", 0);  //Get the id passed from adapter
         noteTitle = data.getStringExtra("title");       //Get the Title passed from adapter
         noteContent = data.getStringExtra("content");   //Get the Content passed from adapter
+        noteUserID = data.getLongExtra("userId", 0);
 
 
         //Initialize Note database
@@ -102,7 +104,7 @@ public class NoteActivity extends AppCompatActivity {
 
     //updateNoteBtn Function - Updates Data in Table
     public void btnUpdatePressed(View v){
-        Note note = new Note(noteID, title.getText().toString(), content.getText().toString());
+        Note note = new Note(noteID, title.getText().toString(), content.getText().toString(), noteUserID);
         db = new NoteDatabase(getApplicationContext());
         db.updateNote(note);    //Run the function of updateNote in database to update
 
@@ -135,7 +137,7 @@ public class NoteActivity extends AppCompatActivity {
             onBackPressed(); //Make the action bar back button to go back to previous activity
         }
         else if (item.getItemId() == R.id.deleteNote){ //Check the id of item clicked is the id of delete button icon on action bar
-            Note note = new Note(noteID, noteTitle, noteContent);
+            Note note = new Note(noteID, noteTitle, noteContent, noteUserID);
             NoteDatabase db = new NoteDatabase(view.getContext());
             db.deleteNote(noteID);  //Run the function of deleteNote in database to delete
             goToMain();             //Got back to MainActivity

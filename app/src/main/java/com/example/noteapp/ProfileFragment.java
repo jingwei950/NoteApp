@@ -97,11 +97,8 @@ public class ProfileFragment extends Fragment {
     //Get current user from SharedPref and Database
     public void getUser(){
         long id = prefManager.get(SharedPrefManager.USER_ID, 0);
-        if(id > 0){
-            user = myDB.getUser(id);
-        }else{
-            user = new Users(0, "Username" , "Email", "Password");
-        }
+        user = myDB.getUser(id);
+        prefManager.set(SharedPrefManager.USER_ID, user.getUserID());
     }
 
     //Display the information of current user

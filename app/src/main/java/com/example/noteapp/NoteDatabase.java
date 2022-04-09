@@ -44,7 +44,9 @@ public class NoteDatabase extends SQLiteOpenHelper {
             " (" +
             NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NOTE_TITLE + " TEXT NOT NULL, " +
-            NOTE_CONTENT + " TEXT);";
+            NOTE_CONTENT + " TEXT, " +
+            NOTE_USER_ID + " INTEGER, " +
+            "FOREIGN KEY (" + NOTE_USER_ID + ") REFERENCES " + DATABASE_USER + "(" + USER_ID + "));";
 
     //User Table Query
     private static final String CREATE_USER_QUERY = "CREATE TABLE " + DATABASE_USER +
@@ -79,6 +81,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
         cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_CONTENT, note.getContent());
+        cv.put(NOTE_USER_ID, note.getUserID());
 
         long result = db.insert(NoteDatabase.DATABASE_NOTE, null, cv);
         Log.i("Inserted", "ID: " + result);
@@ -96,14 +99,14 @@ public class NoteDatabase extends SQLiteOpenHelper {
     public Note getNote(long id) {
         //SELECT * FROM TABLE WHERE ID = 1
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(DATABASE_NOTE, new String[]{NOTE_ID, NOTE_TITLE, NOTE_CONTENT},
+        Cursor cursor = db.query(DATABASE_NOTE, new String[]{NOTE_ID, NOTE_TITLE, NOTE_CONTENT, NOTE_USER_ID},
                 NOTE_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        return new Note(cursor.getLong(0), cursor.getString(1), cursor.getString(2));
+        return new Note(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getLong(3));
     }
 
 
@@ -120,12 +123,31 @@ public class NoteDatabase extends SQLiteOpenHelper {
                 note.setID(Long.parseLong(cursor.getString(0)));
                 note.setTitle(cursor.getString(1));
                 note.setContent(cursor.getString(2));
+                note.setUserID(Long.parseLong(cursor.getString(3)));
                 allNotes.add(note);
             } while (cursor.moveToNext());
         }
 
         return allNotes;
+    }
 
+    public ArrayList<Note> getAllNotes(long userID) {
+        ArrayList<Note> allNotes = new ArrayList<>();
+        String query = "SELECT * FROM " + DATABASE_NOTE + " WHERE " + NOTE_USER_ID + "='" + userID + "' ORDER BY " + NOTE_ID + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                note.setID(Long.parseLong(cursor.getString(0)));
+                note.setTitle(cursor.getString(1));
+                note.setContent(cursor.getString(2));
+                note.setUserID(Long.parseLong(cursor.getString(3)));
+                allNotes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        return allNotes;
     }
 
 
@@ -136,6 +158,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
         Log.d("Edited", "Edited Title: -> " + note.getTitle() + "\n ID -> " + note.getID());
         c.put(NOTE_TITLE, note.getTitle());
         c.put(NOTE_CONTENT, note.getContent());
+        c.put(NOTE_USER_ID, note.getUserID());
         return db.update(DATABASE_NOTE, c, NOTE_ID + "=?", new String[]{String.valueOf(note.getID())});
     }
 
@@ -201,7 +224,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
             cursor.moveToFirst();
             return new Users(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
         }else{
-            return new Users("Email", "Username", "Password");
+            return new Users(0, "Username", "Email", "Password");
         }
     }
 

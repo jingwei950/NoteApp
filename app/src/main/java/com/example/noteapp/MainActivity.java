@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Drawer layout in activity_main for Navigation menu at the side
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-        //Navigation from the side
+        //Side navigation from the
         navView = (NavigationView) findViewById(R.id.nav_view); //This contains both nav_header and nav_menu in it
         navView.setNavigationItemSelectedListener(this); //Set a listener that will be notified when a menu item is selected
 

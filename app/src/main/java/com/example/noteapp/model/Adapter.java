@@ -43,15 +43,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         notesFilter = new ArrayList<>(notes);
     }
 
+    //1. When adapter is initialized, create view holder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Render the view of each note
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_layout, parent, false);
-        return new ViewHolder(view); //1. Pass the view to ViewHolder
+        return new ViewHolder(view); //1a. Pass the view to ViewHolder
     }
 
-    //4. Get the data from ViewHolder and bind it to the view that contains text views declared in ViewHolder
+    //3. Get the data from ViewHolder and bind it to the view that contains text views declared in ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Assign the color that got generated to the variable
@@ -158,7 +159,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
 //        return listOfTitles != null ? listOfTitles.size() : 0;
     }
 
-    //2. Receive the view from OnCreateViewHolder and get the text view
+    //2. Receive all the views from OnCreateViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
@@ -168,7 +169,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         CardView noteCard;      //Card view for each note, which contains title and content
         ImageView cardMenu;   //3 dot button Image view on each card for edit and delete
 
-        //3. Declare the views
+        //2a. Declare the views
         public ViewHolder(@NonNull View itemView){
             super(itemView);
 

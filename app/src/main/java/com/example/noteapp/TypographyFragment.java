@@ -30,15 +30,14 @@ public class TypographyFragment extends Fragment {
     TextView textCurrentFontSize;
     TextView textCurrentLineHeight;
     TextView textCurrentLetterSpacing;
-
     SharedPrefManager prefManager;
-
     DecimalFormat df = new DecimalFormat("0.0");
 
     public TypographyFragment() {
         // Required empty public constructor
     }
 
+    //Constructor
     public static TypographyFragment newInstance() {
         TypographyFragment fragment = new TypographyFragment();
         return fragment;
@@ -100,6 +99,7 @@ public class TypographyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(getActivity().getApplicationContext(), view);
+                //Set menu item onclick event
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -124,6 +124,7 @@ public class TypographyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(getActivity().getApplicationContext(), view);
+                //Set menu item onclick event
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -147,6 +148,7 @@ public class TypographyFragment extends Fragment {
         lineHeightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Open dialog
                 Dialog dialog = new Dialog(getActivity());
                 dialog.setCancelable(true);
                 dialog.setContentView(R.layout.line_height_dialog);
@@ -155,6 +157,7 @@ public class TypographyFragment extends Fragment {
                 textDialogLineHeight.setText(textCurrentLineHeight.getText());
 
                 ImageButton buttonIncreaseLineHeight = dialog.findViewById(R.id.imageButtonIncreaseLineHeight);
+                //Set increase button onclick event
                 buttonIncreaseLineHeight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -169,6 +172,7 @@ public class TypographyFragment extends Fragment {
                 });
 
                 ImageButton buttonDecreaseLineHeight = dialog.findViewById(R.id.imageButtonDecreaseLineHeight);
+                //Set decrease button onclick event
                 buttonDecreaseLineHeight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -182,6 +186,7 @@ public class TypographyFragment extends Fragment {
                     }
                 });
 
+                //Set dialog cancel event
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
@@ -202,6 +207,7 @@ public class TypographyFragment extends Fragment {
         letterSpacingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Open dialog
                 Dialog dialog = new Dialog(getActivity());
                 dialog.setCancelable(true);
                 dialog.setContentView(R.layout.letter_spacing_dialog);
@@ -210,6 +216,7 @@ public class TypographyFragment extends Fragment {
                 textDialogLetterSpacing.setText(textCurrentLetterSpacing.getText());
 
                 ImageButton buttonIncreaseLetterSpacing = dialog.findViewById(R.id.imageButtonIncreaseLetterSpacing);
+                //Set increase button onclick event
                 buttonIncreaseLetterSpacing.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -224,6 +231,7 @@ public class TypographyFragment extends Fragment {
                 });
 
                 ImageButton buttonDecreaseLetterSpacing = dialog.findViewById(R.id.imageButtonDecreaseLetterSpacing);
+                //Set decrease button onclick event
                 buttonDecreaseLetterSpacing.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -237,6 +245,7 @@ public class TypographyFragment extends Fragment {
                     }
                 });
 
+                //Set dialog cancel event
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {

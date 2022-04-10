@@ -34,7 +34,7 @@ public class SignUpActivityTest extends TestCase {
         Intents.init();
     }
 
-    //Field Validity Tests
+    //Field Validity Tests -Empty Fields
     @Test
     public void testEmptyFields(){
         //Click
@@ -43,6 +43,7 @@ public class SignUpActivityTest extends TestCase {
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.empty_fields)));
     }
 
+    //Field Validity Tests -Email already exists
     @Test
     public void testEmailTaken(){
         String email = "user1@gmail.com";
@@ -56,6 +57,7 @@ public class SignUpActivityTest extends TestCase {
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.email_taken)));
     }
 
+    //Field Validity Tests -Incorrect email format, no '@'
     @Test
     public void testInvalidEmail(){
         String email = "email";
@@ -69,6 +71,7 @@ public class SignUpActivityTest extends TestCase {
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.invalid_email)));
     }
 
+    //Field Validity Tests -Username already exists
     @Test
     public void testUsernameTaken(){
         String email = "user@gmail.com";
@@ -82,6 +85,7 @@ public class SignUpActivityTest extends TestCase {
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.username_taken)));
     }
 
+    //Field Validity Tests -Passwords entered are not same
     @Test
     public void testNotSamePassword(){
         String email = "user@gmail.com";
@@ -96,6 +100,7 @@ public class SignUpActivityTest extends TestCase {
         Espresso.onView(withId(R.id.textError)).check(matches(withText(R.string.password_not_same)));
     }
 
+    //Field Validity Tests -Valid fields and user added
     @Test
     public void testValidFields(){
         String email = "user@gmail.com";
@@ -114,6 +119,7 @@ public class SignUpActivityTest extends TestCase {
         Intents.release();
     }
 
+    //Simulate
     public void writeAndClick(String email, String username, String password, String rePassword){
         //Input
         Espresso.onView(withId(R.id.editSignUpEmail)).perform(typeText(email));

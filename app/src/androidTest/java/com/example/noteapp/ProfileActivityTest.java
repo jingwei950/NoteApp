@@ -38,8 +38,8 @@ public class ProfileActivityTest extends TestCase {
     public ActivityScenarioRule<ProfileActivity> activityScenarioRule = new ActivityScenarioRule<>(ProfileActivity.class);
     public ActivityScenario activityScenario;
 
-    SharedPrefManager prefManager;
-    NoteDatabase myDB;
+    public SharedPrefManager prefManager;
+    public NoteDatabase myDB;
     public void setUp() throws Exception {
         super.setUp();
         activityScenario = ActivityScenario.launch(ProfileActivity.class);
@@ -48,23 +48,25 @@ public class ProfileActivityTest extends TestCase {
         Intents.init();
     }
 
-    //Fragment Display Tests
+    //Fragment Display Test -ProfileFragment
     @Test
     public void testProfileFragmentDisplay(){
         onView(withId(R.id.profileFragmentContainer)).check(matches(isDisplayed()));
     }
 
+    //Fragment Display Test -TypographyFragment
     @Test
     public void testTypographyFragmentDisplay(){
         onView(withId(R.id.typographyFragmentContainer)).check(matches(isDisplayed()));
     }
 
+    //Fragment Display Test -ThemeFragment
     @Test
     public void testThemeFragmentDisplay(){
         onView(withId(R.id.themeFragmentContainer)).check(matches(isDisplayed()));
     }
 
-    //Shared Preference Test
+    //Shared Preference Test -Typeface
     @Test
     public void testTypefaceDisplay(){
         //Get typeface from SharedPreferences
@@ -73,6 +75,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentTypeface)).check(matches(withText(typeface)));
     }
 
+    //Shared Preference Test -Font Size
     @Test
     public void testFontSizeDisplay(){
         //Get font size from SharedPreferences
@@ -81,6 +84,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentFontSize)).check(matches(withText(fontSize)));
     }
 
+    //Shared Preference Test -Line Height
     @Test
     public void testLineHeightDisplay(){
         //Get line height from SharedPreferences
@@ -89,6 +93,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentLineHeight)).check(matches(withText(lineHeight)));
     }
 
+    //Shared Preference Test -Letter Spacing
     @Test
     public void testLetterSpacingDisplay(){
         //Get letter spacing from SharedPreferences
@@ -97,6 +102,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentLetterSpacing)).check(matches(withText(letterSpacing)));
     }
 
+    //Shared Preference Test -DayNight
     @Test
     public void testDayNightDisplay(){
         //Get night mode from SharedPreferences
@@ -105,6 +111,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentDayNight)).check(matches(withText(dayNight)));
     }
 
+    //Click Test -Sign Up
     @Test
     public void testSignUpButton(){
         //Click sign up button
@@ -113,7 +120,7 @@ public class ProfileActivityTest extends TestCase {
         intended(hasComponent(SignUpActivity.class.getName()));
     }
 
-    //Click Tests
+    //Click Test -Typeface
     @Test
     public void testTypefaceMenu(){
         //Click typeface and click lancelot
@@ -123,6 +130,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentTypeface)).check(matches(withText("lancelot")));
     }
 
+    //Click Test -Font Size
     @Test
     public void testFontSizeMenu(){
         //Click font size and click large
@@ -132,6 +140,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentFontSize)).check(matches(withText("large")));
     }
 
+    //Click Test -Line Height
     @Test
     public void testLineHeightDialog(){
         //Get initial value, and set expected value
@@ -150,6 +159,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentLineHeight)).check(matches(withText(lineHeight[0])));
     }
 
+    //Click Test - Letter Spacing
     @Test
     public void testLetterSpacingDialog(){
         //Get initial value, and set expected value
@@ -168,6 +178,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textCurrentLetterSpacing)).check(matches(withText(lineHeight[0])));
     }
 
+    //Click Test -DayNight
     @Test
     public void testDayNightMenu(){
         //Click dark light and click night
@@ -181,6 +192,7 @@ public class ProfileActivityTest extends TestCase {
         });
     }
 
+    //Profile Information Update Test -Username
     @Test
     public void testUsernameChange(){
         String newUsername = "user";
@@ -196,6 +208,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textProfileUsername)).check(matches(withText(user.getUserName())));
     }
 
+    //Profile Information Update Test -Email
     @Test
     public void testEmailChange(){
         String newEmail = "user@yahoo.com";
@@ -211,6 +224,7 @@ public class ProfileActivityTest extends TestCase {
         onView(withId(R.id.textProfileEmail)).check(matches(withText(user.getUserEmail())));
     }
 
+    //Profile Information Update Test -Password
     @Test
     public void testPasswordChange(){
         String newPassword = "newPass";

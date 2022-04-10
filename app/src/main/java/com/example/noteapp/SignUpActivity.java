@@ -92,14 +92,17 @@ public class SignUpActivity extends AppCompatActivity {
         Validation validation = new Validation();
         validation.setValid(true);
 
+        //Check empty fields
         if (email.isEmpty() || username.isEmpty() || password.isEmpty() || rePassword.isEmpty()) {
             validation.setValid(false);
             validation.addErrorMessage(getString(R.string.empty_fields));
         } else {
+            //Check email format
             if (!email.contains("@")) {
                 validation.setValid(false);
                 validation.addErrorMessage(getString(R.string.invalid_email));
             }
+            //Check password same
             if (!password.equals(rePassword)) {
 
                 validation.setValid(false);

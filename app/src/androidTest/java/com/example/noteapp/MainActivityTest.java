@@ -29,7 +29,7 @@ public class MainActivityTest extends TestCase {
         Intents.init();
     }
 
-    //Bottom Navigation Bar Tests
+    //Bottom Navigation Bar Test -Home
     @Test
     public void testBottomNavBarHome(){
         //Click
@@ -38,6 +38,7 @@ public class MainActivityTest extends TestCase {
         intended(hasComponent(MainActivity.class.getName()));
     }
 
+    //Bottom Navigation Bar Test -AddNote
     @Test
     public void testBottomNavBarAddNote(){
         //Click
@@ -46,6 +47,7 @@ public class MainActivityTest extends TestCase {
         intended(hasComponent(AddNote.class.getName()));
     }
 
+    //Bottom Navigation Bar Test -Profile
     @Test
     public void testBottomNavBarProfile(){
         //Click
@@ -54,6 +56,7 @@ public class MainActivityTest extends TestCase {
         intended(hasComponent(ProfileActivity.class.getName()));
     }
 
+    //Drawer Test -Profile
     @Test
     public void testDrawerProfile(){
         //Click drawer and click profile
@@ -63,6 +66,7 @@ public class MainActivityTest extends TestCase {
         intended(hasComponent(ProfileActivity.class.getName()));
     }
 
+    //Drawer Test -AddNote
     @Test
     public void testDrawerAddNote(){
         //Click drawer and click add note

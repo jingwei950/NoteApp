@@ -7,10 +7,10 @@ public class Validation {
     private ArrayList<String> errorMessage;
 
     //Constructor
-        public Validation(){
-            valid = false;
-            errorMessage = new ArrayList<>();
-        }
+    public Validation(){
+        valid = false;
+        errorMessage = new ArrayList<>();
+    }
 
     //Get boolean valid
     public boolean getValid(){

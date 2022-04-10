@@ -26,7 +26,7 @@ import org.junit.Test;
 public class LoginActivityTest extends TestCase {
 
     @Rule
-    public ActivityScenarioRule activityScenarioRule = new ActivityScenarioRule(LoginActivity.class);
+    public ActivityScenarioRule<LoginActivity> activityScenarioRule = new ActivityScenarioRule(LoginActivity.class);
     public ActivityScenario activityScenario;
 
     public void setUp() throws Exception {
@@ -35,6 +35,7 @@ public class LoginActivityTest extends TestCase {
         Intents.init();
     }
 
+    //Login success
     @Test
     public void testLoginButtonSuccess(){
         String email = "user1@gmail.com";
@@ -51,6 +52,7 @@ public class LoginActivityTest extends TestCase {
         intended(hasComponent(ProfileActivity.class.getName()));
     }
 
+    //Test no user matched
     @Test public void testLoginButtonInvalidCredentials(){
         String email = "email";
         String username = "name";
@@ -66,6 +68,7 @@ public class LoginActivityTest extends TestCase {
         onView(withId(R.id.errorMessageLogin)).check(matches(withText(R.string.invalid_credentials)));
     }
 
+    //Test empty fields
     @Test
     public void testLoginButtonEmptyFields(){
         //Click

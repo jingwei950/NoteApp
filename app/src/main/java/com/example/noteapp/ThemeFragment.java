@@ -27,6 +27,7 @@ public class ThemeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //Constructor
     public static ThemeFragment newInstance() {
         ThemeFragment fragment = new ThemeFragment();
         return fragment;
@@ -71,6 +72,7 @@ public class ThemeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(getActivity().getApplicationContext(), view);
+                //Set menu item onclick event
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

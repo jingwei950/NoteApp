@@ -42,17 +42,16 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //Constructor
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
 
+    //Create fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     //Get rootView
@@ -61,10 +60,9 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         return rootView;
-
     }
 
-    //Init views, managers onclick events
+    //Init views, managers, onclick events
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -121,7 +119,6 @@ public class ProfileFragment extends Fragment {
                     //To Login Activity
                     Intent login = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                     startActivity(login);
-
                 }
             });
         }else{

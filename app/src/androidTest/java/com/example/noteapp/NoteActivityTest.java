@@ -33,8 +33,8 @@ public class NoteActivityTest extends TestCase {
     public ActivityScenarioRule<MainActivity> activityScenarioRule = new ActivityScenarioRule(MainActivity.class);
     public ActivityScenario activityScenario;
 
-    SharedPrefManager prefManager;
-    NoteDatabase myDB;
+    public SharedPrefManager prefManager;
+    public NoteDatabase myDB;
     public void setUp() throws Exception {
         super.setUp();
         activityScenario = ActivityScenario.launch(MainActivity.class);
@@ -42,6 +42,7 @@ public class NoteActivityTest extends TestCase {
         myDB = new NoteDatabase(getInstrumentation().getTargetContext());
     }
 
+    //Test edit and update note
     @Test
     public void testUpdateNote(){
         String newTitle = "Edit Title Test";

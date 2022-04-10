@@ -257,8 +257,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId()){
 
             case R.id.notes:
-                Toast.makeText(this, "You have clicked on Notes", Toast.LENGTH_SHORT).show();
-
                 //Close the navigation drawer layout and go back to main page
                 drawerLayout.close();
                 break;

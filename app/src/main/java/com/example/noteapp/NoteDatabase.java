@@ -193,28 +193,6 @@ public class NoteDatabase extends SQLiteOpenHelper {
         return resulted;
     }
 
-
-    //Function to get all notes in the database
-//    public ArrayList<Users> getAllUser() {
-//        ArrayList<Users> allUsers = new ArrayList<>();
-//        String query = "SELECT * FROM " + DATABASE_USER + " ORDER BY " + USER_ID + " DESC";
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-////                Users user = new Users();
-//                user.setUserID(Long.parseLong(cursor.getString(0)));
-//                user.setUserEmail(cursor.getString(1));
-//                user.setUserName(cursor.getString(2));
-//                user.setUserPassword(cursor.getString(3));
-//                allUsers.add(user);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        return allUsers;
-//
-//    }
-
     //Function to get specific note according to ID
     public Users getUser(long id) {
         //SELECT * FROM TABLE WHERE ID = 1

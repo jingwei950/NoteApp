@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="owjingwei@gmail.com"
+            android:text="asd123@gmail.com"
             android:textColor="#1A237E"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

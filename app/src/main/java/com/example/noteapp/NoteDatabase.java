@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteDatabase extends SQLiteOpenHelper {
-
+    //Initialize Database and Tables
     private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "NoteDatabase.db";
     public static final String DATABASE_NOTE = "notesTable";
@@ -60,11 +60,12 @@ public class NoteDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        //Create table
+        //Create Tables
         db.execSQL(CREATE_NOTE_QUERY);
         db.execSQL(CREATE_USER_QUERY);
     }
 
+    //Upgrade Tables
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NOTE);

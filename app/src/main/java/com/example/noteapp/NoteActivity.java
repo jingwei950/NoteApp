@@ -108,8 +108,13 @@ public class NoteActivity extends AppCompatActivity {
         db = new NoteDatabase(getApplicationContext());
         db.updateNote(note);    //Run the function of updateNote in database to update
 
-        Toast.makeText(view.getContext(), "Title: " + title.getText().toString() +
-                " Content: " + content.getText().toString() + " saved.", Toast.LENGTH_SHORT).show();
+        //Handle edited notes
+        if(title.getText().toString().equals("")){ //If user changes the title to empty notes set the toast message to show <Untitled> note saved
+            Toast.makeText(view.getContext(), getString(android.R.string.untitled) + " note saved.", Toast.LENGTH_SHORT).show();
+        }
+        else{   //If user changes the title with text in the title, then set the toast message to show the new title given
+            Toast.makeText(view.getContext(), "Note " + title.getText().toString() + " saved.", Toast.LENGTH_SHORT).show();
+        }
 
         //Go back to main page
         goToMain();

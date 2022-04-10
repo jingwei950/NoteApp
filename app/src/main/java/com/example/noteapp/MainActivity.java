@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Init SharedPrefManager
         prefManager = new SharedPrefManager(getApplicationContext());
 
+        //Tool bar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //Using toolbar as actionbar
         setSupportActionBar(toolbar); //This helps to set the menu options to toolbar
@@ -81,24 +83,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         //If the light sensor is not null set the sensor listener
-        if (correctBrightness){
-            Log.i("sensor", "Unregistered sensor");
-            sensorManager.unregisterListener(sensorEventListenerLight);
-        }
-        if(sensor != null && !correctBrightness){
+        if(sensor != null){ //if(sensor != null && !correctBrightness){
             Log.i("sensor", "Sensor.TYPE_LIGHT Available");
             sensorManager.registerListener(
                     sensorEventListenerLight,
                     sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
-        else { // else when the sensor is null, logcat "sensor not available"
+        else { // else when the sensor is null, tell dev "sensor not available"
             Log.i("sensor", "Sensor.TYPE_LIGHT NOT Available");
         }
 
         //Get the attributes of this window
         layout = getWindow().getAttributes();
-
 
         //Bottom navigation bar
         bottomNavigationView = findViewById(R.id.mainBottomNavigationView);
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myDB = new NoteDatabase(MainActivity.this);
 
         //Select all data in database and store it in List
-//        allNotes = myDB.getAllNotes();
         allNotes = myDB.getAllNotes(prefManager.get(SharedPrefManager.USER_ID, SharedPrefManager.USER_ID_DEFAULT));
 
         //Passing the ArrayList of notes into adapter
@@ -212,8 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.i("sensor", "Current screen brightness: " + layout.screenBrightness + "F, 50% brightness.");
                 }
             }
-
-
         }
 
         @Override
@@ -228,8 +222,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu, this adds items to the action bar if it is present
         MenuInflater inflater = getMenuInflater();
 
-        //Show 3 dots menu (options menu)
-        inflater.inflate(R.menu.options_menu, menu);
         //Show Search bar
         inflater.inflate(R.menu.search_bar, menu);
         //Show bottom navigation bar
@@ -255,33 +247,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         return true;
-    }
-
-
-
-    //Handle 3 dots menu item click
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        //Check which item is clicked
-        switch(item.getItemId()){
-
-            case R.id.newFolder:
-                Toast.makeText(this, "You have clicked on new folder item", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.home:
-                Toast.makeText(this, "You have clicked on home item", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.select:
-                Toast.makeText(this, "You have clicked on select item", Toast.LENGTH_SHORT).show();
-                break;
-
-            default:
-                Toast.makeText(this, "You have clicked on some button", Toast.LENGTH_SHORT).show();
-        }
-        return false;
     }
 
     //Handle navigation item click

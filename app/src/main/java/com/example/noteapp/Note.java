@@ -8,8 +8,9 @@ public class Note implements Serializable {
     private String content;
     private long userID;
 
+    //Constructor
     Note (){}
-
+    //Constructor with noteID
     public Note(long id, String title, String content, long userID){
         this.ID = id;
         this.title = title;
@@ -17,12 +18,14 @@ public class Note implements Serializable {
         this.userID = userID;
     }
 
+    //Constructor without noteID
     Note(String title, String content, long userID){
         this.title = title;
         this.content = content;
         this.userID = userID;
     }
 
+    //Get and set method for Note
     public long getID() {
         return ID;
     }

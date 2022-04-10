@@ -75,7 +75,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
 
 
-    //Function to add data into database
+    //Function to add Note data into database
     public long addNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -132,6 +132,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
         return allNotes;
     }
 
+    //Function to get notes according to userID
     public ArrayList<Note> getAllNotes(long userID) {
         ArrayList<Note> allNotes = new ArrayList<>();
         String query = "SELECT * FROM " + DATABASE_NOTE + " WHERE " + NOTE_USER_ID + "='" + userID + "' ORDER BY " + NOTE_ID + " DESC";
@@ -152,7 +153,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
     }
 
 
-    //Function to update the title and/or content of specific note according to ID
+    //Function to update the title and/or content of specific note according to note ID
     public int updateNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues c = new ContentValues();
@@ -163,7 +164,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
         return db.update(DATABASE_NOTE, c, NOTE_ID + "=?", new String[]{String.valueOf(note.getID())});
     }
 
-    //Function to delete specific note in database according to ID
+    //Function to delete specific note in database according to note ID
     public void deleteNote(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DATABASE_NOTE, NOTE_ID + "=?", new String[]{

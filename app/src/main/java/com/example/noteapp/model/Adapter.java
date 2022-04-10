@@ -49,7 +49,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Render the view of each note
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_layout, parent, false);
-        return new ViewHolder(view); //1a. Pass the view to ViewHolder
+        return new ViewHolder(view); //1a. Pass the view to ViewHolder for processing
     }
 
     //3. Get the data from ViewHolder and bind it to the view that contains text views declared in ViewHolder
@@ -75,11 +75,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         String noteContent = notes.get(holder.getAdapterPosition()).getContent();
         long noteUserID = notes.get(holder.getAdapterPosition()).getUserID();
 
-        //Set the holder with click listener
+        //Set each cardView in RecyclerView with on click listener
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //When the notes is clicked the start a new activity
+                //When the notes is clicked the start a new activity pass extras to NoteActivity
                 Intent noteIntent = new Intent(view.getContext(), NoteActivity.class); //Pass the context and the activity
                 noteIntent.putExtra("id", noteID);          //Pass the ID to the new activity
                 noteIntent.putExtra("title", noteTitle);    //Pass the title to the new activity
@@ -90,12 +90,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
             }
         });
 
-        //Set the on click listener for card menu on each card
+        //Set each cardView's card menu (3 dot button on card) in RecyclerView with on click listener
         holder.cardMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu menu = new PopupMenu(view.getContext(), view);
                 menu.setGravity(Gravity.END); //Show menu directly below instead of right side
+
+                //Set on click listener for menu item "Edit"
                 menu.getMenu().add("Edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -109,6 +111,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                         return false;
                     }
                 });
+
+                //Set on click listener for menu item "Delete"
                 menu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -121,6 +125,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                     }
                 });
 
+                //Show the menu
                 menu.show();
 
             }
@@ -149,14 +154,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         return colors.get(number);
     }
 
-    //The number of item we want to display in the recycler view
+    //The total number of items we want to display in the recycler view
     @Override
     public int getItemCount() {
         //The total items in the List
-//        return listOfTitles.size();
-
         return notes.size();
-//        return listOfTitles != null ? listOfTitles.size() : 0;
     }
 
     //2. Receive all the views from OnCreateViewHolder
@@ -183,7 +185,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         }
     }
 
-    //For filter search
+    //For returning filtered notes
     @Override
     public Filter getFilter() {
         return filterNotes; //Return the filter note
@@ -222,7 +224,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) { //Publish the results of filtering
             notes.clear();//Remove any item in the original notes
-            notes.addAll((ArrayList)filterResults.values); //Add all results of filtered restults
+            notes.addAll((ArrayList)filterResults.values); //Add all results of filtered results
             notifyDataSetChanged();//Tell the to refresh the list
         }
     };

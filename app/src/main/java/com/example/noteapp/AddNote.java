@@ -116,7 +116,7 @@ public class AddNote extends AppCompatActivity {
         //Check if both title and content is empty, if it is note will not be save
         if(title.isEmpty() && content.isEmpty()){
             //Make a toast and let user know
-            Toast.makeText(AddNote.this, "Please enter something in the fields to save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddNote.this, "Please enter something to one of the fields to save", Toast.LENGTH_SHORT).show();
         }
         else if(title.isEmpty()){ //When only title is empty assign "<Untitled>" to title and save both title and content
 
@@ -128,7 +128,7 @@ public class AddNote extends AppCompatActivity {
             myDB.addNote(note);
 
             //Make a toast to inform user note saved
-            Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddNote.this, "Untitled note saved", Toast.LENGTH_SHORT).show();
 
             //Go back to the main page after saving the notes
             backToMain();
@@ -140,7 +140,7 @@ public class AddNote extends AppCompatActivity {
             myDB.addNote(note);
 
             //Make a toast to inform user note saved
-            Toast.makeText(AddNote.this, "Save button clicked, title: " + title + " content: " + content + " have been saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddNote.this, "New note '" + title + "' saved", Toast.LENGTH_SHORT).show();
 
             //Go back to the main page after saving the notes
             backToMain();
